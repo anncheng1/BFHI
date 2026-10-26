@@ -1,0 +1,1681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Offline self-study for Baby-friendly Hospital Initiative (Hospital Rakan Bayi) assessment.">
+<meta name="theme-color" content="#EEF2EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1312" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="BFHI Learn">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);color-scheme:light}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>BFHI Learn</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: iOS-style app shell — sticky translucent nav, scrolling view, fixed tab bar; inset grouped lists. */
+:root{
+  --bg:#EEF2EF; --surface:#FFFFFF; --surface2:#E3EAE6; --ink:#132320; --muted:#5A6B67; --line:#D5DED9;
+  --brand:#0E5A52; --brand-ink:#FFFFFF; --soft:#D7ECE6; --warm:#C8603F; --warm-soft:#F7E2D9;
+  --good:#23794A; --good-soft:#DCEFE3; --warn:#9A6A12; --warn-soft:#F5EAD2; --bad:#B23A2C; --bad-soft:#F6DEDA;
+  --nav:rgba(238,242,239,.82);
+  --display: ui-rounded, "SF Pro Rounded", "Nunito", "Segoe UI Variable Display", system-ui, sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r:16px;
+  --tabh:58px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0B1312; --surface:#15201E; --surface2:#1D2A28; --ink:#E6EEEB; --muted:#93A5A0; --line:#263431;
+  --brand:#5CC0AE; --brand-ink:#04221E; --soft:#163A34; --warm:#EE8D6C; --warm-soft:#3A2219;
+  --good:#5DC087; --good-soft:#163022; --warn:#E2B354; --warn-soft:#33290F; --bad:#F0796A; --bad-soft:#3A1A16;
+  --nav:rgba(11,19,18,.80); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0B1312; --surface:#15201E; --surface2:#1D2A28; --ink:#E6EEEB; --muted:#93A5A0; --line:#263431;
+  --brand:#5CC0AE; --brand-ink:#04221E; --soft:#163A34; --warm:#EE8D6C; --warm-soft:#3A2219;
+  --good:#5DC087; --good-soft:#163022; --warn:#E2B354; --warn-soft:#33290F; --bad:#F0796A; --bad-soft:#3A1A16;
+  --nav:rgba(11,19,18,.80); color-scheme:dark }
+
+*{box-sizing:border-box}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.5;margin:0;
+  -webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--nav)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation}
+a{color:var(--brand)}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:8px}
+
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;height:48px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px));
+  background:var(--nav);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);border-bottom:.5px solid transparent;transition:border-color .2s}
+.nav.scrolled{border-bottom-color:var(--line)}
+.nav .t{font-weight:650;font-size:1.0625rem;opacity:0;transition:opacity .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:56vw}
+.nav.scrolled .t,.nav.solid .t{opacity:1}
+.nav .l{justify-self:start}.nav .r{justify-self:end}
+.navbtn{background:none;border:0;color:var(--brand);font-size:1.0625rem;display:flex;align-items:center;gap:2px;min-height:44px;padding:0 8px}
+.navbtn svg{width:22px;height:22px}
+
+main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:4px calc(var(--tabh) + env(safe-area-inset-bottom,0px) + 28px);max-width:720px;margin:0 auto}
+.lt{font-family:var(--display);font-weight:800;font-size:2.125rem;letter-spacing:-.01em;line-height:1.1;margin:4px 0 14px;text-wrap:balance}
+.sub{color:var(--muted);margin:-8px 0 16px}
+h2.sh{font-size:.8125rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;margin:24px 4px 8px}
+.sh-desc{color:var(--muted);font-size:.875rem;margin:-4px 4px 8px}
+
+/* grouped list */
+.group{background:var(--surface);border-radius:var(--r);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;padding:11px 14px;min-height:56px;position:relative}
+.row+.row::before{content:"";position:absolute;top:0;left:60px;right:0;border-top:.5px solid var(--line)}
+.row:active{background:var(--surface2)}
+.row .tx{flex:1;min-width:0}
+.row .tt{font-weight:600;display:block}
+.row .ts{color:var(--muted);font-size:.875rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev{width:8px;height:14px;color:var(--muted);flex:none;opacity:.7}
+.badge{flex:none;width:34px;height:34px;border-radius:10px;background:var(--soft);color:var(--brand);display:grid;place-items:center;
+  font-family:var(--display);font-weight:800;font-size:.8125rem;letter-spacing:-.01em}
+.badge.done{background:var(--brand);color:var(--brand-ink)}
+.meter{width:42px;height:6px;border-radius:3px;background:var(--surface2);overflow:hidden;flex:none}
+.meter i{display:block;height:100%;background:var(--brand);border-radius:3px}
+
+/* cards */
+.card{background:var(--surface);border-radius:var(--r);padding:16px}
+.stack{display:grid;gap:12px}
+.hero{background:var(--brand);color:var(--brand-ink);border-radius:20px;padding:18px;display:flex;gap:16px;align-items:center}
+.hero .k{font-family:var(--display);font-weight:800;font-size:1.25rem;line-height:1.2}
+.hero .m{opacity:.85;font-size:.875rem}
+.hero .btn{background:var(--brand-ink);color:var(--brand);margin-top:10px}
+.ring{flex:none;width:84px;height:84px}
+.ring text{font-family:var(--display);font-weight:800}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:var(--surface);border:0;border-radius:var(--r);padding:14px;text-align:left;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.tile:active{transform:scale(.98)}
+.tile svg{width:26px;height:26px;color:var(--brand)}
+.tile b{font-size:.9375rem;line-height:1.25}
+.tile span{color:var(--muted);font-size:.8125rem}
+.fact{background:var(--warm-soft);border-radius:var(--r);padding:14px 16px}
+.fact .e{font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--warm);font-weight:700}
+.fact b{display:block;font-family:var(--display);font-size:1.125rem;margin:2px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 18px;min-height:46px;font-weight:650;background:var(--brand);color:var(--brand-ink)}
+.btn.sec{background:var(--soft);color:var(--brand)}
+.btn.ghost{background:var(--surface2);color:var(--ink)}
+.btn.block{width:100%}
+.btn:active{opacity:.85}
+.btn[disabled]{opacity:.4}
+.row-btns{display:flex;gap:10px;flex-wrap:wrap}
+.row-btns .btn{flex:1 1 140px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--surface2);color:var(--muted)}
+.pill.good{background:var(--good-soft);color:var(--good)}.pill.bad{background:var(--bad-soft);color:var(--bad)}.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.muted{color:var(--muted)}
+.small{font-size:.875rem}
+
+/* search */
+.search{display:flex;align-items:center;gap:8px;background:var(--surface2);border-radius:12px;padding:0 12px;margin-bottom:6px}
+.search svg{width:18px;height:18px;color:var(--muted);flex:none}
+.search input{border:0;background:none;flex:1;min-width:0;padding:10px 0;font-size:1rem;outline:none}
+mark{background:var(--warm-soft);color:inherit;border-radius:3px;padding:0 1px}
+
+/* lesson */
+.lhead{display:flex;gap:14px;align-items:center;margin:6px 0 16px}
+.lhead .badge{width:56px;height:56px;border-radius:16px;font-size:1.125rem}
+.lhead h1{font-family:var(--display);font-weight:800;font-size:1.75rem;line-height:1.15;margin:0;text-wrap:balance}
+.lhead p{margin:2px 0 0;color:var(--muted)}
+.prose{background:var(--surface);border-radius:var(--r);padding:4px 18px 8px}
+.prose p,.prose li,.prose dd{max-width:65ch}
+.prose ul,.prose ol{padding-left:1.25rem}
+.prose li{margin:4px 0}
+.prose li::marker{color:var(--brand)}
+.prose a{font-weight:600;text-decoration:none;border-bottom:1.5px solid var(--soft)}
+.callout{background:var(--soft);border-radius:12px;padding:12px 14px;margin:14px 0}
+.callout.warm{background:var(--warm-soft)}
+.figure{margin:0 0 12px;border-radius:var(--r);overflow:hidden;background:var(--surface);border:0;padding:0;display:block;width:100%}
+.figure img{display:block;width:100%;height:auto}
+.figure .cap{display:block;font-size:.75rem;color:var(--muted);padding:6px 12px 8px;text-align:left}
+.checks{list-style:none;padding:0;margin:0}
+.checks li{display:flex;gap:10px;padding:8px 0;align-items:flex-start}
+.checks li+li{border-top:.5px solid var(--line)}
+.checks svg{width:20px;height:20px;color:var(--brand);flex:none;margin-top:2px}
+.say{background:var(--surface);border-radius:var(--r);padding:14px 16px;border-left:4px solid var(--warm)}
+.say .e{font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--warm);font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.say p{margin:6px 0 0;font-size:1.0625rem}
+.linkbtn{background:none;border:0;color:var(--brand);font-weight:650;padding:6px 0;min-height:36px}
+.tbl-wrap{overflow-x:auto;margin:10px 0;-webkit-overflow-scrolling:touch}
+.tbl{border-collapse:collapse;width:100%;font-size:.875rem;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:8px;text-align:left;border-bottom:.5px solid var(--line);vertical-align:top}
+.tbl th{color:var(--muted);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.tbl td.e{color:var(--brand);font-weight:650}
+.cue-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.cue{border-radius:12px;padding:10px;font-size:.8125rem;min-width:0}
+.cue b{display:block;font-size:.9375rem}
+.cue span{display:block;font-style:italic;opacity:.8;margin-bottom:4px}
+.cue ul{padding-left:1rem;margin:0}
+.cue.early{background:var(--good-soft)}.cue.mid{background:var(--warn-soft)}.cue.late{background:var(--bad-soft)}
+.myths dt{font-weight:650;margin-top:14px;position:relative;padding-left:26px}
+.myths dt::before{content:"✕";position:absolute;left:0;top:0;color:var(--bad);font-weight:800}
+.myths dd{margin:4px 0 0 26px;color:var(--ink);position:relative}
+.swipehint{text-align:center;color:var(--muted);font-size:.75rem;margin-top:14px}
+
+/* quiz */
+.qtop{display:flex;align-items:center;gap:10px;margin:6px 0 14px}
+.bar{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--brand);border-radius:3px;transition:width .3s}
+.qcount{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.875rem;font-weight:600}
+.qtext{font-family:var(--display);font-weight:700;font-size:1.375rem;line-height:1.3;margin:6px 0 18px;text-wrap:pretty}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;background:var(--surface);border:2px solid transparent;border-radius:14px;padding:14px;min-height:56px;font-size:1rem;transition:background .15s,border-color .15s}
+.opt .k{flex:none;width:28px;height:28px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;font-weight:700;font-size:.8125rem}
+.opt:active{transform:scale(.99)}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.right .k{background:var(--good);color:var(--surface)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);color:var(--surface)}
+.opt[disabled]{cursor:default}
+.feedback{margin-top:14px;border-radius:14px;padding:14px 16px;animation:rise .25s ease}
+.feedback.good{background:var(--good-soft)}.feedback.bad{background:var(--bad-soft)}
+.feedback b{display:block;margin-bottom:2px}
+@keyframes rise{from{transform:translateY(8px);opacity:.4}to{transform:none;opacity:1}}
+.score{font-family:var(--display);font-weight:800;font-size:3.5rem;line-height:1;font-variant-numeric:tabular-nums}
+.bars{display:grid;gap:8px}
+.bars .bl{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:10px;font-size:.875rem;font-variant-numeric:tabular-nums}
+.bars .bl b{font-family:var(--display)}
+.boxes{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--surface2);margin:10px 0 6px}
+.boxes i{display:block;height:100%}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.75rem;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;background:var(--c)}
+
+/* segmented */
+.seg{display:flex;background:var(--surface2);border-radius:10px;padding:2px;gap:2px}
+.seg button{flex:1;border:0;background:none;border-radius:8px;padding:7px 8px;font-size:.875rem;font-weight:600;min-height:36px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+/* flashcards */
+.fc-stage{position:relative;height:min(62vh,440px);margin:6px 0 16px;perspective:1200px}
+.fc{position:absolute;inset:0;border:0;padding:0;background:none;touch-action:pan-y;transition:transform .35s ease}
+.fc .in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.3,.7,.3,1)}
+.fc.flipped .in{transform:rotateY(180deg)}
+.fc .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;background:var(--surface);padding:22px;
+  display:flex;flex-direction:column;justify-content:center;gap:12px;text-align:left;box-shadow:0 10px 30px rgba(10,40,35,.10);overflow:auto}
+.fc .back{transform:rotateY(180deg);background:var(--soft)}
+.fc .face .e{font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--warm)}
+.fc .face p{margin:0;font-size:1.1875rem;line-height:1.4}
+.fc .face.front p{font-family:var(--display);font-weight:700;font-size:1.375rem}
+.fc .hint{position:absolute;bottom:14px;left:22px;right:22px;color:var(--muted);font-size:.8125rem}
+.fc-tag{position:absolute;top:18px;padding:4px 10px;border-radius:8px;font-weight:800;font-size:.875rem;opacity:0;z-index:2}
+.fc-tag.yes{right:18px;background:var(--good);color:var(--surface)}
+.fc-tag.no{left:18px;background:var(--bad);color:var(--surface)}
+
+/* forms */
+.field{display:grid;gap:6px}
+.field label,.flabel{font-size:.8125rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+input[type="datetime-local"],select{width:100%;font-size:1rem;padding:12px;border-radius:12px;border:0;background:var(--surface);min-height:48px;-webkit-appearance:none;appearance:none}
+.radio-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;padding:12px 14px;min-height:50px;position:relative}
+.radio-row+.radio-row::before{content:"";position:absolute;top:0;left:14px;right:0;border-top:.5px solid var(--line)}
+.radio-row .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center}
+.radio-row[aria-checked="true"] .dot{border-color:var(--brand)}
+.radio-row[aria-checked="true"] .dot::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--brand)}
+.radio-row .tx{flex:1}
+.radio-row .rt{color:var(--muted);font-size:.875rem;font-variant-numeric:tabular-nums}
+.radio-row[aria-disabled="true"]{opacity:.45}
+.label-card{background:var(--surface);border-radius:20px;padding:18px;border:2px dashed var(--brand)}
+.label-card .big{font-family:var(--display);font-weight:800;font-size:1.75rem;line-height:1.15;font-variant-numeric:tabular-nums}
+.label-card .lbl{font-family:var(--mono);font-size:1.0625rem;background:var(--surface2);border-radius:10px;padding:10px 12px;margin:10px 0;word-break:break-word;font-variant-numeric:tabular-nums}
+.label-card.no{border-color:var(--bad)}
+
+/* audit */
+.aud{padding:12px 14px;display:grid;gap:8px;position:relative}
+.aud+.aud::before{content:"";position:absolute;top:0;left:14px;right:0;border-top:.5px solid var(--line)}
+.aud .seg button[aria-pressed="true"].y{background:var(--good);color:var(--surface)}
+.aud .seg button[aria-pressed="true"].p{background:var(--warn);color:var(--surface)}
+.aud .seg button[aria-pressed="true"].n{background:var(--bad);color:var(--surface)}
+
+/* tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:25;display:flex;justify-content:space-around;
+  padding:6px max(8px,env(safe-area-inset-left,0px)) calc(4px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-right,0px));
+  background:var(--nav);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);border-top:.5px solid var(--line)}
+.tab{flex:1;max-width:120px;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.6875rem;font-weight:600;color:var(--muted);min-height:48px;padding:2px 0;position:relative}
+.tab svg{width:26px;height:26px}
+.tab[aria-current="page"]{color:var(--brand)}
+.tab .dotn{position:absolute;top:0;left:calc(50% + 8px);min-width:18px;height:18px;border-radius:9px;background:var(--warm);color:#fff;font-size:.6875rem;display:grid;place-items:center;padding:0 5px}
+
+.toast{position:fixed;left:50%;bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px) + 18px);transform:translate(-50%,20px);background:var(--ink);color:var(--bg);
+  padding:10px 16px;border-radius:12px;font-weight:600;font-size:.9375rem;opacity:0;pointer-events:none;transition:all .25s;z-index:40;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 56px) max(8px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 16px) max(8px,env(safe-area-inset-left,0px));overflow:auto;touch-action:pinch-zoom}
+.lightbox img{max-width:100%;max-height:100%;border-radius:8px}
+.lightbox button{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:max(12px,env(safe-area-inset-right,0px));background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:20px;padding:8px 14px;font-weight:650}
+.install{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border-radius:var(--r);padding:14px}
+.install svg{width:24px;height:24px;color:var(--brand);flex:none}
+.install p{margin:0;font-size:.875rem}
+.empty{text-align:center;padding:28px 16px;color:var(--muted)}
+.view-enter{animation:viewin .22s ease}
+@keyframes viewin{from{opacity:.3;transform:translateX(14px)}to{opacity:1;transform:none}}
+/* widgets */
+.prose h3{font-family:var(--display);font-size:1.125rem;margin:22px 0 8px}
+.widget{margin:12px 0}
+.prose .figure{margin:14px 0;background:var(--surface2)}
+.brand{display:flex;align-items:center;gap:14px;margin:10px 0 16px}
+.brand img{border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.12);flex:none}
+.journey{display:grid;gap:0;position:relative}
+.jp{display:flex;gap:12px;position:relative;padding-bottom:14px}
+.jp:not(:last-child)::before{content:"";position:absolute;left:15px;top:30px;bottom:0;width:2px;background:var(--soft)}
+.jn{flex:none;width:32px;height:32px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:800;font-family:var(--display);z-index:1}
+.jb{min-width:0;flex:1}.jb>b{display:block}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{border:1.5px solid var(--soft);background:var(--surface);border-radius:999px;padding:5px 10px;font-size:.8125rem;text-align:left;max-width:100%}
+.chip b{color:var(--brand);font-family:var(--display);margin-right:2px}
+.chip.done{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}.chip.done b{color:var(--brand-ink)}
+.gh{background:var(--surface2);border-radius:14px;padding:18px 12px 12px}
+.gh-track{position:relative;height:56px}
+.gh-track::before{content:"";position:absolute;left:6%;right:6%;top:12px;height:6px;border-radius:3px;background:var(--line)}
+.gh-fill{position:absolute;left:6%;top:12px;height:6px;border-radius:3px;background:var(--brand);transition:width .35s}
+.gh-pt{position:absolute;top:0;transform:translateX(-50%);background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:44px}
+.gh-pt span{width:30px;height:30px;border-radius:50%;background:var(--surface);border:3px solid var(--line);transition:all .2s}
+.gh-pt.on span{border-color:var(--brand);background:var(--brand);box-shadow:0 0 0 5px var(--soft)}
+.gh-pt em{font-style:normal;font-size:.6875rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.gh-pt.on em{color:var(--brand)}
+.gh-band{position:relative;margin:2px 0 10px;background:var(--warm-soft);color:var(--warm);font-size:.75rem;font-weight:700;text-align:center;border-radius:6px;padding:3px 4px}
+.gh-d{background:var(--surface);border-radius:10px;padding:10px 12px;font-size:.9375rem;min-height:66px}
+.cs{--cc:var(--good);display:grid;grid-template-columns:minmax(0,1fr);gap:12px;background:var(--surface2);border-radius:14px;padding:12px}
+@media (min-width:520px){.cs{grid-template-columns:200px minmax(0,1fr);align-items:center}}
+.cs-img{position:relative;border-radius:12px;overflow:hidden;border:4px solid var(--cc);transition:border-color .3s;background:var(--surface)}
+.cs-img img{display:block;width:100%;aspect-ratio:208/160;object-fit:cover}
+.cs-tag{position:absolute;left:8px;bottom:8px;background:var(--cc);color:var(--surface);font-weight:700;font-size:.8125rem;padding:3px 9px;border-radius:8px}
+.cs-head{display:flex;flex-direction:column}.cs-head b{font-family:var(--display);font-size:1.25rem}
+.cs-act{margin:8px 0 12px;font-weight:800;border-radius:10px;padding:8px 12px;font-family:var(--display);font-size:1.0625rem}
+.cs-range{width:100%;accent-color:var(--cc);height:32px}
+.cs-scale{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);font-weight:600}
+.stm{background:var(--surface2);border-radius:14px;padding:12px}.stm svg{display:block;width:100%;height:auto;margin:8px 0}
+.stm-t{margin:0;font-size:.9375rem}
+.loop{background:var(--surface2);border-radius:14px;padding:10px}.loop svg{display:block;width:100%;max-width:420px;height:auto;margin:0 auto}
+.loop-n{cursor:pointer}.loop-n rect{transition:fill .2s}.loop-n.on rect{fill:var(--brand)}.loop-n.on text{fill:var(--brand-ink)}
+.loop-run{animation:spin 6s linear infinite;transform-origin:170px 115px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loop-d{background:var(--surface);border-radius:10px;padding:10px 12px;margin:6px 0 0;font-size:.9375rem;min-height:66px}
+.stp{background:var(--surface2);border-radius:14px;overflow:hidden}
+.stp-img{background:var(--surface);touch-action:pan-y}.stp-img>img{display:block;width:100%;max-height:300px;object-fit:contain}
+.strip{overflow:hidden;width:100%;max-width:100%}.strip img{display:block;max-width:none;height:100%;transition:transform .35s ease}
+.stp-b{padding:12px 14px}.stp-n{font-size:.75rem;color:var(--warm);font-weight:700;text-transform:uppercase;letter-spacing:.06em;display:block}
+.stp-t{font-family:var(--display);font-size:1.1875rem;display:block}.stp-d{margin:4px 0 10px}
+.stp-nav{display:flex;align-items:center;gap:10px}.stp-nav .btn{min-width:52px;font-size:1.375rem;padding:6px 14px}
+.dots{flex:1;display:flex;justify-content:center;gap:8px}.dots i{width:8px;height:8px;border-radius:4px;background:var(--line);cursor:pointer;transition:all .2s}.dots i.on{width:22px;background:var(--brand)}
+.rhy{display:flex;align-items:center;gap:14px;margin:10px 0}
+.rhy-dot{width:44px;height:44px;border-radius:50%;background:var(--brand);transition:transform .5s ease,background .3s}
+.rhy-dot.s0{transform:scale(.7)}.rhy-dot.s1{transform:scale(1.15);background:var(--warm)}.rhy-dot.s2{transform:scale(.9);background:var(--good)}
+.rhy-w{font-family:var(--display);font-size:1.25rem}
+.stp-r .btn{margin-bottom:10px}
+.sc{background:var(--surface2);border-radius:14px;padding:12px}.sc-wrap{overflow-x:auto}.sc svg{display:block;width:100%;min-width:300px;height:auto;margin-top:10px}
+.sc-bar{cursor:pointer}.sc-d{min-height:1.5em;margin:6px 0 0}
+.lc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lc-o{position:relative;border:3px solid transparent;border-radius:14px;overflow:hidden;background:#fff;padding:0}
+.lc-o img{display:block;width:100%;height:auto}
+.lc-o span{position:absolute;top:6px;left:6px;background:var(--ink);color:var(--bg);border-radius:8px;padding:1px 8px;font-weight:800}
+.lc-o.right{border-color:var(--good)}.lc-o.wrong{border-color:var(--bad);opacity:.75}
+.lc-d{margin-top:8px}
+.sort-card{background:var(--surface2);border-radius:14px;padding:22px 16px;font-family:var(--display);font-weight:700;font-size:1.1875rem;text-align:center;margin-bottom:12px;min-height:96px;display:grid;place-items:center}
+.cs-done{text-align:center;background:var(--surface2);border-radius:14px;padding:18px}
+.qimg{margin:12px 0 0;border-radius:16px;overflow:hidden;background:#fff;max-width:420px}
+.qimg img{display:block;width:100%;height:auto;max-height:260px;object-fit:contain}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:380px){.cue-grid{grid-template-columns:1fr}.lt{font-size:1.875rem}}
+</style>
+
+<header class="nav" id="nav">
+  <div class="l" id="navL"></div>
+  <div class="t" id="navT">BFHI Learn</div>
+  <div class="r" id="navR"></div>
+</header>
+<main id="view" aria-live="polite"></main>
+<nav class="tabbar" id="tabbar" aria-label="Sections">
+  <button class="tab" data-tab="home" id="tab-home"></button>
+  <button class="tab" data-tab="learn" id="tab-learn"></button>
+  <button class="tab" data-tab="practice" id="tab-practice"></button>
+  <button class="tab" data-tab="tools" id="tab-tools"></button>
+</nav>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* BFHI Learn — content. Sources: WHO/UNICEF Implementation Guidance (2018) & revised Ten Steps;
+   WHO Acceptable medical reasons for use of breast-milk substitutes (2009); Neo-BFHI (Nyqvist et al., 2015);
+   KKM Manual Pembimbing Penyusuan Susu Ibu (2019); JKN Sarawak "Penyusuan Susu Ibu Pilihan Terbaik Anda";
+   National Lactation Centre (KKM) infographics. */
+
+const SECTIONS = [
+  { id: 'found', title: 'Foundations', sub: 'What BFHI is and how it is assessed' },
+  { id: 'steps', title: 'The Ten Steps (2018)', sub: 'Critical management procedures and key clinical practices' },
+  { id: 'skills', title: 'Bedside skills', sub: 'What every staff member must be able to show a mother' },
+];
+
+const LESSONS = [
+  /* ---------------- FOUNDATIONS ---------------- */
+  { id: 'intro', sec: 'found', badge: 'BFHI', title: 'What is BFHI?', short: 'The global programme behind "Hospital Rakan Bayi"',
+    body: `
+<p>The <b>Baby-friendly Hospital Initiative (BFHI)</b> was launched by WHO and UNICEF in 1991 to protect, promote and support breastfeeding in facilities that provide maternity and newborn services. In Malaysia these facilities are known as <b>Hospital Rakan Bayi</b>.</p>
+<p>In 2018 the Ten Steps were revised. The changes that matter most at ward level:</p>
+<ul>
+<li>The steps are split into <b>critical management procedures</b> (Steps 1–2) and <b>key clinical practices</b> (Steps 3–10).</li>
+<li>Step 1 now has three parts: <b>1a</b> the Code, <b>1b</b> a written policy, <b>1c</b> monitoring and data.</li>
+<li>Training shifted from counting hours to <b>verified competency</b>.</li>
+<li>Step 9 changed from "give no artificial teats or pacifiers" to <b>counselling mothers on their use and risks</b>.</li>
+<li>The steps now apply explicitly to <b>small, sick and preterm newborns</b>, not only healthy term babies.</li>
+</ul>
+<h3>The Ten Steps along a mother's journey</h3>
+{{w:journey}}
+<div class="callout"><b>Malaysian policy</b> — Exclusive breastfeeding for the first 6 months, complementary foods from 6 months, and continued breastfeeding to 2 years and beyond.</div>`,
+    checks: ['Staff can explain what BFHI / Hospital Rakan Bayi means for their own ward', 'Staff know the national breastfeeding policy (exclusive 6 months, continue to 2 years)'],
+    bm: 'Hospital ini ialah Hospital Rakan Bayi. Kami akan bantu puan menyusukan bayi dengan susu ibu sahaja selama 6 bulan, dan teruskan sehingga 2 tahun.' },
+
+  { id: 'assess', sec: 'found', badge: '80%', title: 'How assessment works', short: 'Indicators, thresholds and who gets interviewed',
+    body: `
+<p>BFHI assessment checks whether the Ten Steps actually happen, not just whether they are written down. Assessors gather evidence from four sources:</p>
+<ul>
+<li><b>Documents</b> — the infant feeding policy, training records, purchase records for formula, monitoring data.</li>
+<li><b>Observation</b> — the wards, labour room, antenatal clinic, NICU: displays, formula storage, rooming-in, how staff help with feeds.</li>
+<li><b>Staff interviews</b> — clinical and non-clinical staff are asked to describe and demonstrate skills.</li>
+<li><b>Mother interviews</b> — antenatal and postnatal mothers, including mothers of babies in NICU/SCN.</li>
+</ul>
+<p>Most clinical indicators in the 2018 guidance use an <b>80% threshold</b>: at least 80% of mothers (or staff) sampled must report or demonstrate the practice.</p>
+<div class="callout warm"><b>Assessment tip</b> — Mothers are the main source of evidence for Steps 3–10. If a mother cannot name two feeding cues or does not know where to get help after discharge, the step fails for her, even if staff taught it. Teach back, then check understanding.</div>`,
+    checks: ['Mothers can repeat back what staff taught them', 'Records match what staff and mothers report'],
+    bm: 'Boleh puan tunjukkan kepada saya bagaimana puan meletakkan bayi untuk menyusu?' },
+
+  { id: 'code', sec: 'found', badge: 'Code', title: 'The International Code', short: 'Marketing of breast-milk substitutes, simply explained',
+    body: `
+<p>The <b>International Code of Marketing of Breast-milk Substitutes</b> (WHA, 1981) and later WHA resolutions protect families from commercial pressure. Malaysia applies it through the national <b>Code of Ethics for the Marketing of Infant Foods and Related Products</b>.</p>
+<p><b>Products covered:</b> infant formula, follow-on and growing-up milks marketed for young children, other foods or drinks marketed as partial or full replacements for breast milk, and feeding bottles and teats.</p>
+<p><b>In a Baby-friendly facility:</b></p>
+<ul>
+<li>No advertising, posters, calendars, pens, notepads or gifts carrying formula or bottle brands.</li>
+<li>No free or low-cost supplies of formula. The facility <b>buys</b> formula through normal procurement.</li>
+<li>No samples or gift packs given to mothers.</li>
+<li>Company staff do not contact pregnant women or mothers, and do not run "education" sessions.</li>
+<li>Formula is stored out of sight of mothers and visitors.</li>
+<li>Information given to health workers must be scientific and factual. Gifts and sponsorship that create conflicts of interest are not accepted.</li>
+</ul>
+<h3>Try it: allowed or a Code violation?</h3>
+{{w:codeSort}}`,
+    checks: ['No branded formula/bottle items anywhere in clinical areas (look in drawers and nurses’ stations)', 'Invoices show formula purchased at not less than wholesale price', 'Staff can name at least two Code provisions'],
+    bm: 'Hospital ini tidak menerima sampel atau hadiah daripada syarikat susu formula.' },
+
+  { id: 'neo', sec: 'found', badge: 'Neo', title: 'Neo-BFHI for NICU & SCN', short: 'The Ten Steps adapted for small and sick newborns',
+    body: `
+<p>The <b>Neo-BFHI</b> (Nordic and Quebec Working Group, 2012; updated 2015) expands the Ten Steps for neonatal wards. The 2018 WHO guidance absorbed much of it. It adds three guiding principles:</p>
+<ol>
+<li><b>Staff attitudes</b> focus on each individual mother and her situation.</li>
+<li><b>Family-centred care</b>, supported by the ward environment.</li>
+<li><b>Continuity of care</b> from pregnancy to after the infant’s discharge.</li>
+</ol>
+<p><b>What it looks like in a NICU:</b></p>
+<ul>
+<li>Mothers start expressing <b>within 1–2 hours</b> of birth when the baby cannot feed, and express <b>at least 8 times in 24 hours</b>.</li>
+<li>Colostrum is given early, including oral immune therapy where unit protocol allows.</li>
+<li><b>Kangaroo mother care</b> (skin-to-skin) is encouraged early, continuously and for as long as possible, without unjustified restrictions.</li>
+<li>Parents have unrestricted access 24 hours a day.</li>
+<li>Feeding moves from scheduled feeds toward <b>semi-demand</b> and then cue-based feeding as the baby matures.</li>
+<li>Bottles are avoided while breastfeeding is being established; cup or other methods are used. Pacifiers are used only for good reasons, such as pain relief or non-nutritive sucking during tube feeds.</li>
+</ul>
+<div class="callout">Hospital Miri FICare practice fits here: parents as partners in care support Neo-BFHI principles 1 and 2.</div>`,
+    checks: ['NICU mothers report being helped to express within 1–2 hours', 'Parents can stay with their baby day and night', 'Skin-to-skin is offered daily to stable babies'],
+    bm: 'Puan boleh mula perah susu dalam masa 1–2 jam selepas bersalin, sekurang-kurangnya 8 kali sehari, walaupun bayi berada di NICU.' },
+
+  /* ---------------- TEN STEPS ---------------- */
+  { id: 's1a', sec: 'steps', badge: '1a', title: 'Comply with the Code', short: 'No promotion of formula, bottles or teats',
+    body: `
+<p><b>Step 1a.</b> Comply fully with the International Code of Marketing of Breast-milk Substitutes and relevant World Health Assembly resolutions.</p>
+<p>See the <a data-go="code">International Code</a> lesson for what is covered. The facility must:</p>
+<ul>
+<li>Purchase all breast-milk substitutes, bottles and teats it uses.</li>
+<li>Have no display of products or brand items.</li>
+<li>Keep staff free from company gifts, sponsorship and contact with mothers.</li>
+</ul>
+<p><b>Why:</b> Marketing undermines a mother’s confidence in her own milk and influences staff behaviour.</p>`,
+    checks: ['No Code violations seen during the ward walk-through', 'Procurement records for formula exist', 'Staff can explain why company gifts are refused'],
+    bm: 'Kami tidak mempromosikan susu formula, botol atau puting tiruan.' },
+
+  { id: 's1b', sec: 'steps', badge: '1b', title: 'Written feeding policy', short: 'A policy everyone knows and can explain',
+    body: `
+<p><b>Step 1b.</b> Have a written infant feeding policy that is routinely communicated to staff and parents.</p>
+<ul>
+<li>The policy covers all Ten Steps, Code implementation, and support for mothers who are not breastfeeding.</li>
+<li>A summary is <b>displayed</b> where pregnant women, mothers and families can see it, in languages they understand (BM, English, Chinese, and local languages where relevant).</li>
+<li>Staff are oriented to the policy when they join.</li>
+</ul>
+<p><b>Assessor expectation:</b> Staff can describe at least two elements of the policy that affect their own work.</p>`,
+    checks: ['Policy summary visible in antenatal clinic, labour room, postnatal wards and NICU', 'Staff can describe two parts of the policy', 'New staff orientation includes the policy'],
+    bm: 'Polisi penyusuan susu ibu hospital ini dipamerkan di dinding wad. Puan boleh tanya saya jika ada soalan.' },
+
+  { id: 's1c', sec: 'steps', badge: '1c', title: 'Monitoring & data', short: 'Measure the practices, review them, act on them',
+    body: `
+<p><b>Step 1c.</b> Establish ongoing monitoring and data-management systems.</p>
+<p>The facility collects data on key practices and reviews them regularly with staff. Useful indicators:</p>
+<ul>
+<li>Exclusive breastfeeding / breast milk only throughout the stay</li>
+<li>Skin-to-skin within 5 minutes, lasting ≥1 hour</li>
+<li>Breastfeeding initiated within 1 hour</li>
+<li>Rooming-in rates</li>
+<li>Supplementation with documented medical reason</li>
+<li>For NICU: mothers expressing within 1–2 hours, infants discharged on breast milk</li>
+</ul>
+<p>Data drive quality improvement: identify the gap, change the process, re-measure.</p>`,
+    checks: ['Monitoring data exist and are recent', 'Data have been discussed with ward staff', 'Action plans exist for indicators below target'],
+    bm: '' },
+
+  { id: 's2', sec: 'steps', badge: '2', title: 'Staff competency', short: 'Knowledge, competence and skills, verified',
+    body: `
+<p><b>Step 2.</b> Ensure that staff have sufficient knowledge, competence and skills to support breastfeeding.</p>
+<ul>
+<li>All staff caring for mothers and babies receive pre-service or in-service breastfeeding training appropriate to their role.</li>
+<li>Competency is <b>assessed</b>, for example by observing a staff member help a mother with positioning and attachment, or teach hand expression.</li>
+<li>Non-clinical staff (clerks, attendants, cleaners) receive orientation so they can refer mothers and avoid undermining breastfeeding.</li>
+</ul>
+<div class="callout"><b>2018 indicator</b> — At least 80% of health professionals who provide feeding services report receiving training on breastfeeding during the previous 2 years.</div>`,
+    checks: ['Training register up to date', 'Staff can demonstrate positioning, attachment and hand expression', 'Competency assessment records exist'],
+    bm: '' },
+
+  { id: 's3', sec: 'steps', badge: '3', title: 'Antenatal discussion', short: 'Prepare pregnant women and families',
+    body: `
+<p><b>Step 3.</b> Discuss the importance and management of breastfeeding with pregnant women and their families.</p>
+<p>Antenatal counselling should cover:</p>
+<ul>
+<li>Importance of breastfeeding for baby and mother</li>
+<li>Immediate skin-to-skin contact and early initiation</li>
+<li>Colostrum and its value</li>
+<li>Rooming-in and feeding on cue</li>
+<li>Positioning and attachment basics</li>
+<li>Exclusive breastfeeding for 6 months; risks of formula, bottles and pacifiers</li>
+<li>Continued breastfeeding to 2 years and beyond</li>
+</ul>
+<p>Involve the husband and family: support from them is one of the strongest predictors of success. No group instruction on formula preparation is given antenatally.</p>`,
+    checks: ['≥80% of postnatal mothers say they received breastfeeding counselling during pregnancy', 'Antenatal records document counselling'],
+    bm: 'Selepas bersalin, bayi akan diletakkan terus di atas dada puan, kulit ke kulit, sekurang-kurangnya 1 jam.' },
+
+  { id: 's4', sec: 'steps', badge: '4', title: 'Skin-to-skin & early initiation', short: 'Immediately after birth, uninterrupted, ≥1 hour',
+    body: `
+{{fig:img/skin.jpg|Newborn lying skin-to-skin on the mother's chest|Skin-to-skin immediately after birth}}
+<p><b>Step 4.</b> Facilitate immediate and uninterrupted skin-to-skin contact and support mothers to initiate breastfeeding as soon as possible after birth.</p>
+<ul>
+<li>Dry the baby and place naked on the mother’s bare chest <b>immediately or within 5 minutes</b> of birth.</li>
+<li>Keep contact <b>uninterrupted for at least 1 hour</b>, or until the first breastfeed. Routine procedures (weighing, vitamin K, examination) can wait.</li>
+<li>After caesarean: start as soon as the mother is alert and responsive, including in theatre or recovery where possible.</li>
+<li>Help the mother recognise when the baby is ready to feed. Do not force the baby to the breast.</li>
+</ul>
+<h3>The first hour: tap each point</h3>
+{{w:goldenHour}}
+<div class="callout warm"><b>Safety</b> — Observe the baby throughout: face visible, nose and mouth clear, colour pink, breathing normally. This protects against sudden unexpected postnatal collapse. Never leave mother and baby alone if the mother is drowsy.</div>
+<p><b>Benefits:</b> warms and calms the baby, stabilises breathing and heart rate, colonises the baby with the mother’s skin bacteria, and stimulates milk flow.</p>`,
+    checks: ['≥80% of mothers report skin-to-skin within 5 minutes, lasting ≥1 hour', '≥80% report breastfeeding within 1 hour of birth', 'Caesarean mothers also offered skin-to-skin'],
+    bm: 'Biarkan bayi di atas dada puan. Bayi akan cari payudara sendiri apabila sudah bersedia.' },
+
+  { id: 's5', sec: 'steps', badge: '5', title: 'Support & manage difficulties', short: 'Positioning, attachment, expression',
+    body: `
+<p><b>Step 5.</b> Support mothers to initiate and maintain breastfeeding and manage common difficulties.</p>
+<ul>
+<li>Within 6 hours of birth, staff observe a feed and help with <a data-go="position">positioning</a> and <a data-go="latch">attachment</a>.</li>
+<li>Teach every mother <a data-go="express">hand expression</a> before discharge.</li>
+<li>Mothers of preterm or sick babies start expressing <b>within 1–2 hours</b>, and at least 8 times in 24 hours, including at night.</li>
+<li>Help with sore or cracked nipples, engorgement and perceived low supply. Most problems come from poor attachment.</li>
+<li>Mothers who are not breastfeeding are taught safe preparation and responsive feeding individually.</li>
+</ul>`,
+    checks: ['≥80% of mothers can demonstrate positioning and attachment', '≥80% can describe or demonstrate hand expression', 'NICU mothers report early help with expressing'],
+    bm: 'Mari saya tunjukkan cara memerah susu dengan tangan. Puan cuba sendiri ya.' },
+
+  { id: 's6', sec: 'steps', badge: '6', title: 'Breast milk only', short: 'No other food or fluids unless medically indicated',
+    body: `
+<p><b>Step 6.</b> Do not provide breastfed newborns any food or fluids other than breast milk, unless medically indicated.</p>
+<p>Not even water: breast milk is about 88% water. Vitamins, minerals and medicines prescribed by health staff are allowed.</p>
+<p><b>Acceptable medical reasons (WHO 2009), summary:</b></p>
+<ul>
+<li><b>Infant, no breast milk:</b> classic galactosaemia, maple syrup urine disease. PKU: specialised formula with some breastfeeding under monitoring.</li>
+<li><b>Infant, may need supplement with breast milk:</b> birth weight &lt;1500 g, gestation &lt;32 weeks, risk of hypoglycaemia not responding to optimal breastfeeding or breast milk.</li>
+<li><b>Mother:</b> severe illness preventing care; HSV-1 lesions on the breast (avoid that breast); some medications (e.g. radioactive iodine-131, cytotoxic chemotherapy); maternal HIV where national guidance advises replacement feeding.</li>
+</ul>
+<p>When a supplement is needed: use expressed breast milk first, record the reason, give by cup or spoon, and counsel the mother.</p>`,
+    checks: ['≥80% of breastfed term babies receive only breast milk during the stay', 'Every supplement has a documented medical reason', 'Formula kept out of view'],
+    bm: 'Bayi tidak perlu air kosong. Susu ibu sudah mengandungi 88% air.' },
+
+  { id: 's7', sec: 'steps', badge: '7', title: 'Rooming-in 24 hours', short: 'Mother and baby together, day and night',
+    body: `
+<p><b>Step 7.</b> Enable mothers and their infants to remain together and to practise rooming-in 24 hours a day.</p>
+<ul>
+<li>Mother and baby stay together from birth, including at night and after caesarean.</li>
+<li>Separation only for a justified medical reason, and it is documented.</li>
+<li>When a baby is admitted to NICU, the mother has unrestricted access and is helped to be with the baby as much as possible.</li>
+</ul>
+<p><b>Benefits:</b> the mother learns her baby’s cues, feeds on demand, milk comes in faster, the baby sleeps better and cries less, and infection risk is lower.</p>`,
+    checks: ['≥80% of mothers report not being separated from their baby for more than 1 hour since birth', 'No routine nursery for healthy babies'],
+    bm: 'Bayi akan tinggal bersama puan 24 jam supaya puan boleh susukan bila-bila masa bayi mahu.' },
+
+  { id: 's8', sec: 'steps', badge: '8', title: 'Responsive feeding', short: 'Recognise and respond to feeding cues',
+    body: `
+<p><b>Step 8.</b> Support mothers to recognise and respond to their infants’ cues for feeding.</p>
+<ul>
+<li>Feed on demand: no restrictions on frequency or length of feeds.</li>
+<li>Teach <a data-go="cues">feeding cues</a> so mothers feed before the baby cries. Crying is a late cue.</li>
+<li>Expect 8–12 feeds in 24 hours in the early days. Wake a baby who sleeps too long.</li>
+<li>Let the baby finish the first breast and come off by itself before offering the second.</li>
+</ul>
+{{w:cueSlider}}
+<div class="callout"><b>Key message:</b> Watch the baby, not the clock.</div>`,
+    checks: ['≥80% of mothers can describe at least two feeding cues', 'No fixed feeding schedules for healthy term babies'],
+    bm: 'Perhatikan tanda awal bayi lapar: membuka mulut, memusingkan kepala, menghisap tangan. Jangan tunggu sehingga bayi menangis.' },
+
+  { id: 's9', sec: 'steps', badge: '9', title: 'Bottles, teats & pacifiers', short: 'Counsel on use and risks',
+    body: `
+<p><b>Step 9.</b> Counsel mothers on the use and risks of feeding bottles, teats and pacifiers.</p>
+<p>The 2018 revision changed this from a prohibition to <b>counselling</b>. Mothers should know:</p>
+<ul>
+<li>Bottles and teats can interfere with learning to breastfeed (nipple confusion) and reduce milk supply.</li>
+<li>Bottles are hard to clean and carry contamination risk.</li>
+<li>Pacifiers can mask feeding cues and reduce feeds.</li>
+</ul>
+<p><b>Alternatives</b> when supplements or expressed milk are needed: <a data-go="cupfeed">cup</a>, spoon or syringe.</p>
+{{fig:img/cupfeed.jpg|Two photos of a newborn being cup-fed|Cup feeding expressed milk}}
+<p>In NICU, pacifiers may be used for <b>justifiable reasons</b>: pain relief during procedures and non-nutritive sucking for tube-fed preterm babies.</p>`,
+    checks: ['≥80% of mothers report being taught the risks of bottles, teats and pacifiers', 'Cups available on the ward'],
+    bm: 'Elakkan botol dan puting tiruan supaya bayi tidak keliru puting. Kalau perlu, berikan susu perahan dengan cawan kecil.' },
+
+  { id: 's10', sec: 'steps', badge: '10', title: 'Discharge & ongoing support', short: 'Timely access to support after going home',
+    body: `
+<p><b>Step 10.</b> Coordinate discharge so that parents and their infants have timely access to ongoing support and care.</p>
+<ul>
+<li>Before discharge, tell every mother where and how to get breastfeeding help.</li>
+<li>Refer to the <b>Klinik Kesihatan</b> for postnatal follow-up and home visits, and to the <b>Kumpulan Sokongan Penyusuan Susu Ibu</b>.</li>
+<li>Give contact details of the ward, lactation counsellor or hotline.</li>
+<li>Explain signs of adequate intake and danger signs that need review.</li>
+<li>For NICU graduates: coordinate with the clinic for continued expressing and breastfeeding support.</li>
+</ul>`,
+    checks: ['≥80% of mothers report that a staff member told them where to get breastfeeding support in the community', 'Discharge summary includes feeding status and referral'],
+    bm: 'Jika ada masalah menyusu selepas pulang, hubungi Klinik Kesihatan atau Kumpulan Sokongan Penyusuan Susu Ibu berhampiran.' },
+
+  /* ---------------- BEDSIDE SKILLS ---------------- */
+  { id: 'position', sec: 'skills', badge: 'Pos', title: 'Positioning', short: 'Four key points of a good position', img: 'img/positioning.jpg', imgAlt: 'Illustration: mother holding baby close, baby’s whole body facing her, body straight and supported',
+    body: `
+<p>The four key points:</p>
+<ol>
+<li><b>Head and body in line</b> — the baby’s body is straight, not twisted.</li>
+<li><b>Close</b> — the baby is held close to the mother’s body.</li>
+<li><b>Facing</b> — the baby’s whole body faces the mother, nose opposite the nipple.</li>
+<li><b>Supported</b> — the whole body is supported, not just the head and shoulders (especially in newborns).</li>
+</ol>
+<p><b>Common positions:</b> cradle, cross-cradle (good for newborns and small babies), football/underarm (good after caesarean or for twins), side-lying (rest at night).</p>
+<p>The mother should be comfortable with back supported. Bring the baby to the breast, not the breast to the baby.</p>
+{{fig:img/positions-4.jpg|Line drawings of football, lying, cross-cradle and cradle positions|Football · Lying · Cross-cradle · Cradle}}
+<h3>Spot the difference</h3>
+{{fig:img/positions-ok-x.jpg|Two correct and two incorrect breastfeeding positions|Top: correct. Bottom: incorrect}}
+<ul><li><b>Top, correct:</b> baby turned toward the mother, body close and in line, whole body supported by arm and pillow.</li>
+<li><b>Bottom, incorrect:</b> baby held away with neck twisted, or mother leaning over the baby instead of bringing the baby to the breast.</li></ul>`,
+    checks: ['Staff can name all four key points', 'Mother can demonstrate a good position'],
+    bm: 'Pastikan badan bayi lurus, rapat dengan badan puan, menghadap puan, dan disokong sepenuhnya.' },
+
+  { id: 'latch', sec: 'skills', badge: 'Att', title: 'Attachment (latch)', short: 'Signs of good attachment and effective suckling', img: 'img/latch-signs.jpg', imgAlt: 'Photo: signs of good attachment labelled in Malay', img2: 'img/latch-steps.jpg', img2Alt: 'Photo sequence: four steps of bringing baby onto the breast',
+    body: `
+<p><b>Steps to attach:</b> touch the baby’s lips with the nipple → wait until the mouth opens wide → quickly bring the baby onto the breast, lower lip aiming well below the nipple.</p>
+{{w:latchSteps}}
+<p><b>Four signs of good attachment:</b></p>
+<ul>
+<li>Mouth wide open</li>
+<li>Lower lip turned outward</li>
+<li>Chin touching the breast</li>
+<li>More areola visible above the mouth than below</li>
+</ul>
+<p><b>Effective suckling:</b> slow deep sucks with pauses, rounded cheeks, swallowing heard or seen, baby releases the breast by itself and looks satisfied.</p>
+<h3>Which baby is well attached?</h3>
+{{w:latchCompare}}
+<p><b>Cracked nipples</b> are usually caused by poor position or attachment, the baby sucking on the nipple only, or pulling the baby off before it releases. To break suction, slide a little finger into the corner of the baby’s mouth.</p>`,
+    checks: ['Staff can list all four attachment signs', 'Staff can help a mother re-attach without taking over (hands-off where possible)'],
+    bm: 'Tunggu mulut bayi terbuka luas, kemudian bawa bayi rapat ke payudara. Dagu bayi patut menyentuh payudara.' },
+
+  { id: 'cues', sec: 'skills', badge: 'Cue', title: 'Feeding cues', short: 'Early, mid and late signs of hunger',
+    body: `
+{{w:cueSlider}}
+<div class="cue-grid">
+<div class="cue early"><b>Early</b><span>"I’m hungry"</span><ul><li>Stirring</li><li>Mouth opening</li><li>Turning head, rooting</li></ul></div>
+<div class="cue mid"><b>Mid</b><span>"I’m really hungry"</span><ul><li>Stretching</li><li>More movement</li><li>Hand to mouth</li></ul></div>
+<div class="cue late"><b>Late</b><span>"Calm me, then feed me"</span><ul><li>Crying</li><li>Agitated movements</li><li>Turning red</li></ul></div>
+</div>
+<p>Feed at early cues. A crying baby is harder to attach: calm the baby first with skin-to-skin, then feed.</p>
+<p>Other cues: eye movements under closed or open eyelids, sucking on fingers or blanket, soft whimpering.</p>`,
+    checks: ['Mother can name two early feeding cues'],
+    bm: 'Tanda awal bayi lapar: bergerak-gerak, membuka mulut, memusingkan kepala mencari payudara.' },
+
+  { id: 'enough', sec: 'skills', badge: 'Out', title: 'Is baby getting enough?', short: 'Signs of adequate intake',
+    body: `
+<ul>
+<li>Baby releases the breast by itself and looks satisfied and calm</li>
+<li>Breast feels softer and lighter after the feed</li>
+<li><b>More than 6 wet nappies in 24 hours</b> (after the first few days), and frequent stools</li>
+<li>Steady weight gain</li>
+</ul>
+<h3>A newborn's stomach is small</h3>
+{{w:stomach}}
+<p>Colostrum is produced in small amounts that match a newborn’s small stomach. Frequent feeding, not supplementation, builds supply.</p>
+<div class="callout"><b>Supply rule:</b> More breastfeeding means more milk. Less breastfeeding means less milk.</div>
+<h3>Why frequent feeding makes more milk</h3>
+{{w:supplyLoop}}`,
+    checks: ['Mother can describe two signs her baby is getting enough'],
+    bm: 'Bayi cukup susu jika kencing lebih 6 kali sehari, kerap berak dan berat badan bertambah.' },
+
+  { id: 'express', sec: 'skills', badge: 'Exp', title: 'Hand expression', short: 'Step by step, and how long to express',
+    body: `
+{{w:expressSteps}}
+<h3>Helping the milk flow</h3>
+{{fig:img/massage.jpg|Helper massaging the back of a seated mother leaning forward on a table|Back massage helps the let-down reflex}}
+<p>Sit relaxed, think about or look at the baby, and ask a helper to massage along both sides of the spine.</p>
+<h3>Step by step</h3>
+<ol>
+<li>Wash hands. Sit comfortably and relax; think about or look at the baby. A gentle back massage helps milk flow.</li>
+<li>Place the thumb above the areola and the first finger opposite, below it. Support the breast with the other fingers.</li>
+<li>Press thumb and finger back toward the chest wall, then compress and release. Repeat rhythmically. Do not slide fingers along the skin.</li>
+<li>Rotate position around the areola to empty all segments.</li>
+<li>Repeat on the other breast.</li>
+</ol>
+<table class="tbl"><thead><tr><th>Purpose</th><th>How often</th></tr></thead><tbody>
+<tr><td>Colostrum when baby cannot attach</td><td>5–10 min every 1–2 h</td></tr>
+<tr><td>Build supply</td><td>20 min every 2 h (≥6 times/24 h)</td></tr>
+<tr><td>Soften areola before feeding</td><td>3–4 expressions</td></tr>
+<tr><td>Blocked duct</td><td>Massage and express until lump clears</td></tr>
+<tr><td>Working mother</td><td>15–30 min per session</td></tr>
+</tbody></table>`,
+    checks: ['Mother can demonstrate hand expression', 'Staff can demonstrate on a breast model'],
+    bm: 'Letak ibu jari di atas areola dan jari telunjuk di bawah. Tekan ke arah dada, picit dan lepas.' },
+
+  { id: 'storage', sec: 'skills', badge: 'EBM', title: 'Storing expressed milk', short: 'Storage times, thawing and warming',
+    body: `
+<p>Times from the KKM / JKN Sarawak guide. Use the <a data-go="tool:ebm">EBM label tool</a> to calculate a use-by time.</p>
+{{w:storageChart}}
+<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Where</th><th>Healthy baby</th><th>Preterm / sick</th></tr></thead><tbody>
+<tr><td>Room 25–37 °C</td><td>4 h</td><td>4 h</td></tr>
+<tr><td>Air-conditioned 15–25 °C</td><td>8 h</td><td>—</td></tr>
+<tr><td>Air-conditioned &lt;15 °C</td><td>24 h</td><td>—</td></tr>
+<tr><td>Fridge 2–4 °C</td><td>&lt;8 days</td><td>48 h</td></tr>
+<tr><td>1-door fridge freezer</td><td>2 weeks</td><td>2 weeks</td></tr>
+<tr><td>2-door fridge freezer −20 °C</td><td>3 months</td><td>3 months</td></tr>
+<tr><td>Deep freezer −20 °C</td><td>6 months</td><td>3 months</td></tr>
+<tr><td>Thawed in fridge</td><td>24 h</td><td>12 h</td></tr>
+</tbody></table></div>
+<ul>
+<li>Store one feed per container; label with date and time expressed. Do not overfill containers for freezing.</li>
+<li>If fridge milk will not be used within 5 days, freeze it.</li>
+<li>Thaw the oldest first, overnight on the top shelf of the fridge. Warm in a bowl of warm water. Swirl gently to mix separated fat.</li>
+<li>Thawed milk: do not refreeze. Warmed milk: use within 1 hour.</li>
+<li><b>Never</b> heat milk in a microwave or on the stove.</li>
+</ul>`,
+    checks: ['Mother knows how long milk keeps in the fridge', 'Ward EBM fridge has labelled, dated containers'],
+    bm: 'Susu perahan boleh disimpan dalam peti sejuk (ruang am) kurang daripada 8 hari. Jangan panaskan dalam microwave.' },
+
+  { id: 'cupfeed', sec: 'skills', badge: 'Cup', title: 'Cup feeding', short: 'Giving expressed milk without a bottle',
+    body: `
+{{fig:img/cupfeed.jpg|Two photos of a newborn being cup-fed|Baby upright, cup resting on the lower lip}}
+<ol>
+<li>Hold the baby upright or semi-upright (about 45°) on your lap, wrapped so hands do not knock the cup.</li>
+<li>Rest the small cup on the baby’s lower lip, edges touching the upper lip.</li>
+<li>Tip the cup so milk just reaches the lip. <b>Do not pour</b> milk into the mouth. Let the baby lap or sip at its own pace.</li>
+<li>The baby stops when full. A little spillage at first is normal.</li>
+</ol>
+<p>Cup feeding avoids nipple confusion and keeps the baby in control of the feed. It suits preterm babies from about 30–32 weeks when unit protocol allows.</p>`,
+    checks: ['Staff can demonstrate cup feeding', 'Cups available on the ward and in NICU'],
+    bm: 'Jangan tuang susu ke dalam mulut bayi. Biarkan bayi menghirup sendiri.' },
+
+  { id: 'work', sec: 'skills', badge: 'Work', title: 'Returning to work', short: 'Keep breastfeeding after maternity leave',
+    body: `
+<ol>
+<li>Start practising expression around 2 weeks after birth, or whenever comfortable.</li>
+<li>Build a stock of frozen expressed milk.</li>
+<li>Two weeks before returning to work, practise replacing feeds with expressed milk, one daytime feed at a time.</li>
+<li>Train the caregiver to cup-feed expressed milk.</li>
+<li>At work, express every 3 hours or so to prevent engorgement and protect supply. Breastfeed on demand after work, at night and on rest days.</li>
+</ol>
+<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Feed time</th><th>Day 1–3</th><th>4–6</th><th>7–9</th><th>10–13</th></tr></thead><tbody>
+<tr><td>7.30–9.00</td><td class="e">EBM</td><td class="e">EBM</td><td class="e">EBM</td><td class="e">EBM</td></tr>
+<tr><td>10.00–11.30</td><td>Breast</td><td class="e">EBM</td><td class="e">EBM</td><td class="e">EBM</td></tr>
+<tr><td>12.00–1.30</td><td>Breast</td><td>Breast</td><td class="e">EBM</td><td class="e">EBM</td></tr>
+<tr><td>3.30–4.30</td><td>Breast</td><td>Breast</td><td>Breast</td><td class="e">EBM</td></tr>
+</tbody></table></div>`,
+    checks: ['Mother has a plan for expressing at work'],
+    bm: 'Mulakan latihan memerah susu 2 minggu selepas bersalin dan simpan sebagai stok.' },
+
+  { id: 'myths', sec: 'skills', badge: 'Myth', title: 'Myths vs facts', short: 'Common misconceptions mothers raise',
+    body: `
+{{fig:img/colostrum.jpg|Drops of yellow colostrum collected on a spoon|Colostrum: thick, yellow and precious}}
+<dl class="myths">
+<dt>Colostrum is stale milk because it is yellow.</dt><dd>The yellow colour comes from beta-carotene. Colostrum is rich in antibodies, protein and vitamins A and E: the baby’s first immunisation.</dd>
+<dt>Breastfeeding makes breasts sag.</dt><dd>Pregnancy and ageing cause sagging, not breastfeeding. A supportive bra helps.</dd>
+<dt>Adding formula keeps the baby fuller.</dt><dd>Breast milk digests quickly so babies feed often; this is normal. Formula reduces demand and lowers supply.</dd>
+<dt>Formula is almost the same as breast milk.</dt><dd>Live cells, antibodies and enzymes in breast milk cannot be replicated. Added ingredients may not be absorbed in the same way.</dd>
+<dt>Flat or inverted nipples prevent breastfeeding.</dt><dd>Babies breastfeed from the areola, not the nipple alone. Good positioning solves most cases.</dd>
+<dt>Mothers must avoid certain foods to prevent colic.</dt><dd>Colic has no identifiable cause and improves with age. Wind often comes from prolonged crying, shallow latch or teats. If one food seems linked, stop it for a week and retry.</dd>
+<dt>A sick mother or one on medicine must stop breastfeeding.</dt><dd>Most illnesses and most medicines are compatible with breastfeeding. Exceptions include chemotherapy and radioactive drugs. Check with a doctor or pharmacist.</dd>
+</dl>`,
+    checks: ['Staff can correct common myths with accurate information'],
+    bm: 'Kolostrum bukan susu basi. Warna kuning datang daripada beta-karotena dan sangat berkhasiat untuk bayi.' },
+];
+
+/* Quiz bank. step = lesson id; a = index of correct option (options are shuffled on display). */
+const QUESTIONS = [
+  { id: 'q1', step: 'intro', q: 'In the 2018 revision, Steps 1 and 2 are called…', o: ['Critical management procedures', 'Key clinical practices', 'Core competencies', 'Facility standards'], a: 0, w: 'Steps 1–2 are critical management procedures; Steps 3–10 are key clinical practices.' },
+  { id: 'q2', step: 'intro', q: 'Malaysian policy recommends exclusive breastfeeding for…', o: ['6 months, then continue to 2 years', '4 months, then continue to 1 year', '6 months, then stop', '12 months'], a: 0, w: 'Exclusive for 6 months, complementary food from 6 months, continue breastfeeding to 2 years and beyond.' },
+  { id: 'q3', step: 'intro', q: 'Which change did the 2018 revision make to Step 9?', o: ['From banning teats and pacifiers to counselling on their use and risks', 'Pacifiers became recommended', 'It was merged with Step 6', 'It now applies only to NICU'], a: 0, w: 'Step 9 now asks staff to counsel mothers on the use and risks of bottles, teats and pacifiers.' },
+  { id: 'q4', step: 'assess', q: 'Most clinical indicators in BFHI assessment use which threshold?', o: ['80%', '50%', '90%', '100%'], a: 0, w: 'The 2018 guidance sets 80% for most indicators.' },
+  { id: 'q5', step: 'assess', q: 'The main source of evidence for Steps 3–10 is…', o: ['Interviews with mothers', 'The written policy', 'Training records', 'Formula invoices'], a: 0, w: 'Mothers report whether clinical practices actually happened.' },
+  { id: 'q6', step: 'code', q: 'Which of these is allowed in a Baby-friendly facility?', o: ['Buying formula through normal procurement', 'Free formula supplies from a company', 'Branded pens from a formula company', 'Giving mothers sample gift packs'], a: 0, w: 'Facilities purchase formula. Free supplies, branded items and samples violate the Code.' },
+  { id: 'q7', step: 'code', q: 'Feeding bottles and teats are covered by the Code.', o: ['True', 'False'], a: 0, w: 'The Code covers breast-milk substitutes, feeding bottles and teats.' },
+  { id: 'q8', step: 'code', q: 'Where should formula stock be kept on a postnatal ward?', o: ['Out of sight of mothers and visitors', 'On a shelf near the nurses’ station', 'At each bedside', 'In the waiting area'], a: 0, w: 'Formula should not be visible to mothers or visitors.' },
+  { id: 'q9', step: 'neo', q: 'Mothers of preterm babies who cannot feed should start expressing within…', o: ['1–2 hours of birth', '6 hours', '24 hours', 'When milk comes in on day 3'], a: 0, w: 'Early expression (within 1–2 h) improves long-term supply.' },
+  { id: 'q10', step: 'neo', q: 'How often should a NICU mother express to build supply?', o: ['At least 8 times in 24 hours', '3 times a day', 'Only when breasts feel full', 'Once every 6 hours'], a: 0, w: 'At least 8 times/24 h, including once at night.' },
+  { id: 'q11', step: 'neo', q: 'Which is a Neo-BFHI guiding principle?', o: ['Continuity of care from pregnancy to after discharge', 'Strict visiting hours', 'Scheduled 3-hourly feeds until discharge', 'Separate nursery for all preterms'], a: 0, w: 'The three principles: individual focus on the mother, family-centred care, continuity of care.' },
+  { id: 'q12', step: 'neo', q: 'In NICU, a pacifier may be justified for…', o: ['Pain relief during procedures', 'Settling a baby to delay feeds', 'Every baby at night', 'Replacing skin-to-skin'], a: 0, w: 'Justifiable uses include procedural pain relief and non-nutritive sucking during tube feeds.' },
+  { id: 'q13', step: 's1a', q: 'Step 1a requires the facility to…', o: ['Comply fully with the International Code', 'Train staff for 20 hours', 'Display the policy', 'Collect monitoring data'], a: 0, w: '1a = Code; 1b = policy; 1c = monitoring.' },
+  { id: 'q14', step: 's1b', q: 'The infant feeding policy summary should be displayed…', o: ['Where mothers and families can see it, in languages they understand', 'In the director’s office only', 'On the intranet only', 'In the staff room only'], a: 0, w: 'Displayed in maternity and newborn areas in relevant languages.' },
+  { id: 'q15', step: 's1b', q: 'The policy should also cover support for mothers who are not breastfeeding.', o: ['True', 'False'], a: 0, w: 'All mothers get feeding support, including individual teaching on safe preparation.' },
+  { id: 'q16', step: 's1c', q: 'Which is a useful Step 1c monitoring indicator?', o: ['Skin-to-skin within 5 minutes lasting ≥1 hour', 'Number of formula brands stocked', 'Staff overtime hours', 'Bed occupancy'], a: 0, w: 'Monitor the clinical practices that make up the Ten Steps.' },
+  { id: 'q17', step: 's2', q: 'The 2018 Step 2 indicator asks whether health professionals received breastfeeding training within the previous…', o: ['2 years', '5 years', '6 months', '10 years'], a: 0, w: '≥80% of relevant health professionals trained within the previous 2 years.' },
+  { id: 'q18', step: 's2', q: 'How does the 2018 guidance prefer to verify staff skills?', o: ['Competency assessment', 'Counting course hours only', 'Written exam only', 'Self-report only'], a: 0, w: 'The emphasis moved to competency verification.' },
+  { id: 'q19', step: 's2', q: 'Non-clinical staff such as clerks and attendants…', o: ['Need orientation appropriate to their role', 'Need no breastfeeding knowledge', 'Must complete the full clinical course', 'Should advise on formula'], a: 0, w: 'They should know the policy and how to refer mothers.' },
+  { id: 'q20', step: 's3', q: 'Which topic should NOT be part of antenatal group education?', o: ['How to prepare formula', 'Skin-to-skin contact', 'Rooming-in', 'Feeding on cue'], a: 0, w: 'No group instruction on formula preparation is given antenatally.' },
+  { id: 'q21', step: 's3', q: 'Why involve husbands and family in antenatal counselling?', o: ['Their support strongly predicts breastfeeding success', 'They must sign consent for breastfeeding', 'It is required by law', 'To teach them formula preparation'], a: 0, w: 'Support from husband, family and community is a key success factor.' },
+  { id: 'q22', step: 's4', q: 'After a normal birth, skin-to-skin should start…', o: ['Immediately or within 5 minutes', 'After weighing', 'Within 30 minutes', 'After the first bath'], a: 0, w: 'Immediately or within 5 minutes, uninterrupted for at least 1 hour.' },
+  { id: 'q23', step: 's4', q: 'Minimum duration of uninterrupted skin-to-skin after birth?', o: ['1 hour', '10 minutes', '30 minutes', '4 hours'], a: 0, w: 'At least 1 hour, or until the first breastfeed.' },
+  { id: 'q24', step: 's4', q: 'After caesarean, skin-to-skin should start…', o: ['As soon as the mother is alert and responsive', 'Only after 24 hours', 'Only when she reaches the ward', 'It is not recommended'], a: 0, w: 'Start in theatre or recovery as soon as the mother can respond.' },
+  { id: 'q25', step: 's4', q: 'During skin-to-skin, staff should check that…', o: ['The baby’s face is visible, airway clear and colour pink', 'The baby is swaddled', 'The baby is lying on its back', 'The mother is asleep'], a: 0, w: 'Observation protects against sudden unexpected postnatal collapse.' },
+  { id: 'q26', step: 's4', q: 'Which routine procedure should be delayed until after the first hour of skin-to-skin?', o: ['Weighing the baby', 'Drying the baby', 'Checking breathing', 'Placing baby on mother'], a: 0, w: 'Weighing, examination and injections can wait.' },
+  { id: 'q27', step: 's5', q: 'Every mother should be taught which skill before discharge?', o: ['Hand expression', 'Formula preparation', 'Bottle sterilising', 'Using a pacifier'], a: 0, w: 'Hand expression is required for all mothers under Step 5.' },
+  { id: 'q28', step: 's5', q: 'The most common cause of sore nipples is…', o: ['Poor positioning and attachment', 'Breastfeeding too often', 'Fair skin', 'Large breasts'], a: 0, w: 'Fix the attachment and soreness usually improves.' },
+  { id: 'q29', step: 's6', q: 'A healthy term breastfed baby seems thirsty on a hot day. You advise…', o: ['Breastfeed more often; no water needed', 'Give 30 ml of water', 'Give glucose water', 'Give formula'], a: 0, w: 'Breast milk is about 88% water.' },
+  { id: 'q30', step: 's6', q: 'Which is an acceptable medical reason to avoid breast milk entirely?', o: ['Classic galactosaemia', 'Neonatal jaundice', 'Caesarean birth', 'Mother has a cold'], a: 0, w: 'Classic galactosaemia and maple syrup urine disease require special formula.' },
+  { id: 'q31', step: 's6', q: 'Which infant may need supplementation in addition to breast milk?', o: ['Birth weight under 1500 g', 'Birth weight 3000 g', 'Baby born by caesarean', 'Baby who cries at night'], a: 0, w: 'VLBW (<1500 g) or <32 weeks may need fortification or supplements.' },
+  { id: 'q32', step: 's6', q: 'If a supplement is medically needed, the first choice is…', o: ['The mother’s own expressed milk', 'Glucose water', 'Plain water', 'Any formula by bottle'], a: 0, w: 'Use expressed breast milk first, by cup or spoon, and document the reason.' },
+  { id: 'q33', step: 's6', q: 'Which maternal medicine is a reason to temporarily stop breastfeeding?', o: ['Radioactive iodine-131', 'Paracetamol', 'Iron tablets', 'Amoxicillin'], a: 0, w: 'Radioactive iodine and cytotoxic chemotherapy are examples.' },
+  { id: 'q34', step: 's7', q: 'The Step 7 indicator asks mothers whether they were separated from their baby for more than…', o: ['1 hour', '6 hours', '12 hours', '24 hours'], a: 0, w: '≥80% report no separation longer than 1 hour (unless justified).' },
+  { id: 'q35', step: 's7', q: 'Which is a benefit of rooming-in?', o: ['Mother learns her baby’s feeding cues', 'Baby gets more formula', 'Fewer feeds at night', 'Mother sleeps undisturbed'], a: 0, w: 'Rooming-in supports cue-based feeding and faster milk production.' },
+  { id: 'q36', step: 's8', q: 'Which is a LATE feeding cue?', o: ['Crying', 'Mouth opening', 'Turning head', 'Stirring'], a: 0, w: 'Crying is late. Calm the baby first, then feed.' },
+  { id: 'q37', step: 's8', q: 'How many feeding cues should a mother be able to describe for Step 8?', o: ['At least 2', 'At least 5', 'Only 1', 'None; she should follow the clock'], a: 0, w: '≥80% of mothers can describe at least two cues.' },
+  { id: 'q38', step: 's8', q: 'For a healthy term baby, feeds should be…', o: ['On demand, no limit on frequency or length', 'Every 3 hours for 10 minutes', 'Every 4 hours', 'Only during the day'], a: 0, w: 'Responsive feeding: watch the baby, not the clock.' },
+  { id: 'q39', step: 's9', q: 'Which is a recommended alternative to a bottle for giving expressed milk?', o: ['Small cup', 'Pacifier dipped in milk', 'Large teat', 'Sippy cup with spout'], a: 0, w: 'Cup, spoon or syringe.' },
+  { id: 'q40', step: 's9', q: 'A risk of early pacifier use is…', o: ['Masking feeding cues and fewer feeds', 'Better latch', 'More milk', 'Less jaundice'], a: 0, w: 'Pacifiers can mask hunger cues and reduce breastfeeding frequency.' },
+  { id: 'q41', step: 's10', q: 'Step 10 is met when the mother…', o: ['Knows where to get breastfeeding support after discharge', 'Has bought a breast pump', 'Has a formula plan', 'Has been weighed'], a: 0, w: '≥80% of mothers report being told where to access community support.' },
+  { id: 'q42', step: 's10', q: 'Which is an appropriate community referral in Malaysia?', o: ['Klinik Kesihatan and the breastfeeding support group', 'A formula company hotline', 'Pharmacy formula counter', 'None needed'], a: 0, w: 'Klinik Kesihatan postnatal care and Kumpulan Sokongan Penyusuan Susu Ibu.' },
+  { id: 'q43', step: 'position', q: 'Which is NOT one of the four key points of positioning?', o: ['Baby’s head tilted down to the chest', 'Head and body in line', 'Close to the mother', 'Whole body supported'], a: 0, w: 'The four are: in line, close, facing the breast, supported.' },
+  { id: 'q44', step: 'position', q: 'Which position is often comfortable after caesarean?', o: ['Football (underarm)', 'Cradle with baby on the wound', 'Standing', 'Baby lying flat beside mother on the back'], a: 0, w: 'Football/underarm keeps the baby off the abdomen.' },
+  { id: 'q45', step: 'latch', q: 'With good attachment, more areola is visible…', o: ['Above the baby’s top lip', 'Below the lower lip', 'Equally above and below', 'No areola is visible'], a: 0, w: 'The lower lip takes in more of the lower areola.' },
+  { id: 'q46', step: 'latch', q: 'Which is a sign of good attachment?', o: ['Lower lip turned outward', 'Cheeks sucked in', 'Clicking sounds', 'Lips pursed forward'], a: 0, w: 'Wide mouth, lower lip out, chin touching, more areola above.' },
+  { id: 'q47', step: 'latch', q: 'Effective suckling looks like…', o: ['Slow deep sucks with audible swallowing', 'Rapid shallow sucks only', 'Dimpled cheeks', 'Baby falling asleep at once every time'], a: 0, w: 'Slow deep sucks, rounded cheeks, swallowing heard.' },
+  { id: 'q48', step: 'enough', q: 'After the first few days, how many wet nappies suggest adequate intake?', o: ['More than 6 in 24 hours', '2 in 24 hours', '1 per day', '3 in 24 hours'], a: 0, w: 'More than 6 wet nappies plus frequent stools and weight gain.' },
+  { id: 'q49', step: 'express', q: 'When hand expressing, fingers should…', o: ['Press back toward the chest, compress and release', 'Slide along the skin toward the nipple', 'Squeeze the nipple', 'Pull the breast outward'], a: 0, w: 'Press back, compress, release. Avoid sliding or squeezing the nipple.' },
+  { id: 'q50', step: 'express', q: 'To build supply, a mother should express about…', o: ['20 minutes every 2 hours (≥6 times/24 h)', '5 minutes twice a day', 'Once a day for an hour', 'Only when leaking'], a: 0, w: 'Per the KKM guide: 20 min every 2 h, at least 6 times in 24 hours.' },
+  { id: 'q51', step: 'storage', q: 'Fresh EBM for a healthy baby in the fridge (2–4 °C) keeps for…', o: ['Less than 8 days', '24 hours', '1 month', '4 hours'], a: 0, w: 'Less than 8 days; freeze if not used within 5 days.' },
+  { id: 'q52', step: 'storage', q: 'Fresh EBM for a preterm or sick baby in the fridge keeps for…', o: ['48 hours', '8 days', '2 weeks', '4 hours'], a: 0, w: '48 hours for preterm/sick babies.' },
+  { id: 'q53', step: 'storage', q: 'Thawed EBM for a healthy baby must be used within…', o: ['24 hours, never refrozen', '7 days', '1 hour', '3 days, may refreeze'], a: 0, w: '24 h for healthy babies (12 h for preterm/sick). Do not refreeze.' },
+  { id: 'q54', step: 'storage', q: 'Warmed EBM must be used within…', o: ['1 hour', '4 hours', '12 hours', '24 hours'], a: 0, w: 'Warmed milk cannot be stored again.' },
+  { id: 'q55', step: 'storage', q: 'Which warming method is safe?', o: ['Container in a bowl of warm water', 'Microwave on low', 'Boiling on the stove', 'Direct gas flame'], a: 0, w: 'Never microwave or heat on the stove.' },
+  { id: 'q56', step: 'cupfeed', q: 'During cup feeding you should…', o: ['Let the baby lap or sip; never pour', 'Pour milk steadily into the mouth', 'Lay the baby flat', 'Use a large cup to finish fast'], a: 0, w: 'Baby upright, cup on lower lip, baby controls the pace.' },
+  { id: 'q57', step: 'work', q: 'When should a mother start practising expression before returning to work?', o: ['About 2 weeks after birth', 'On the day she returns', 'Never; switch to formula', 'Only after 6 months'], a: 0, w: 'Start around 2 weeks postpartum and build a stock.' },
+  { id: 'q58', step: 'myths', q: 'Colostrum is yellow because of…', o: ['Beta-carotene', 'Staleness', 'Infection', 'Bilirubin'], a: 0, w: 'Beta-carotene; colostrum is safe and highly nutritious.' },
+  { id: 'q59', step: 'myths', q: 'A mother with flat nipples asks if she can breastfeed. You say…', o: ['Yes; babies feed from the areola, and position helps', 'No; she must use formula', 'Only with a nipple shield always', 'Only after surgery'], a: 0, w: 'Babies attach to the areola, not the nipple alone.' },
+  { id: 'q60', step: 'myths', q: 'Most maternal medicines are compatible with breastfeeding.', o: ['True', 'False'], a: 0, w: 'Only a small amount passes into milk. Exceptions include chemotherapy and radioactive drugs.' },
+  { id: 'qi1', step: 'cues', img: 'img/cue-01.jpg', q: 'This baby is opening the mouth. What should the mother do?', o: ['Feed now: this is an early cue', 'Wait until the baby cries', 'Give a pacifier', 'Wait for the next scheduled feed'], a: 0, w: 'Mouth opening is an early cue. Feed now, before crying starts.' },
+  { id: 'qi2', step: 'cues', img: 'img/cue-02.jpg', q: 'Turning the head like this is…', o: ['An early feeding cue', 'A late feeding cue', 'A sign of pain', 'A sign the baby is full'], a: 0, w: 'Rooting and turning the head are early cues.' },
+  { id: 'qi3', step: 'cues', img: 'img/cue-12.jpg', q: 'Hand to mouth, as shown, is…', o: ['A mid feeding cue', 'An early cue only seen at night', 'A late cue', 'Not a feeding cue'], a: 0, w: 'Hand to mouth is a mid cue: "I’m really hungry".' },
+  { id: 'qi4', step: 'cues', img: 'img/cue-20.jpg', q: 'What is the best response to this baby?', o: ['Calm the baby first, then feed', 'Attach to the breast immediately while crying', 'Give water', 'Leave the baby to settle alone'], a: 0, w: 'Crying is a late cue. Calm with skin-to-skin or cuddling, then feed.' },
+  { id: 'qi5', step: 'latch', img: 'img/latch-good.jpg', q: 'Look at the chin and the dark areola. Is this good attachment?', o: ['Yes: chin touching, more areola above the mouth', 'No: the nipple only is in the mouth', 'No: the chin is too close', 'Cannot tell from this view'], a: 0, w: 'Chin close to the breast and more areola visible above the top lip are signs of good attachment.' },
+  { id: 'qi6', step: 'latch', img: 'img/latch-poor.jpg', q: 'Look at the chin and the dark areola. Is this good attachment?', o: ['No: chin away and most of the areola is outside the mouth', 'Yes: this is ideal attachment', 'Yes: the nipple is well placed', 'No: the baby is too close'], a: 0, w: 'Chin away from the breast and the whole areola visible means the baby is sucking on the nipple: risk of sore nipples and poor milk transfer.' },
+  { id: 'qi7', step: 's4', img: 'img/skin.jpg', q: 'After a normal birth, this contact should begin within…', o: ['5 minutes, lasting at least 1 hour', '30 minutes, lasting 10 minutes', '1 hour, after weighing', '2 hours, after the bath'], a: 0, w: 'Immediately or within 5 minutes, uninterrupted for at least 1 hour.' },
+  { id: 'qi8', step: 'cupfeed', img: 'img/cupfeed.jpg', q: 'In cup feeding, the milk should be…', o: ['Brought to the lip so the baby sips or laps it', 'Poured steadily into the mouth', 'Given with the baby lying flat', 'Mixed with water first'], a: 0, w: 'Never pour. The baby controls the pace.' },
+  { id: 'qi9', step: 'myths', img: 'img/colostrum.jpg', q: 'A grandmother says this yellow milk is stale and should be thrown away. You explain…', o: ['It is colostrum: rich in antibodies, give it to the baby', 'She is right: discard it', 'Give it only after boiling', 'Give formula until white milk comes'], a: 0, w: 'The yellow colour is beta-carotene. Colostrum is the baby’s first immunisation.' },
+];
+
+/* Assessor interview drill */
+const INTERVIEW = [
+  { who: 'Staff', step: 's1b', q: 'Tell me about your hospital’s infant feeding policy. How does it affect your work?', a: 'Name the policy and give two specific elements, e.g. skin-to-skin within 5 min for ≥1 h after every birth, rooming-in 24 h, no formula without a documented medical reason, no Code violations.' },
+  { who: 'Staff', step: 's1a', q: 'A formula company representative offers free samples for your ward. What do you do?', a: 'Refuse. Explain the hospital complies with the International Code and the Malaysian Code of Ethics; formula is purchased, not accepted free. Report to the unit manager.' },
+  { who: 'Staff', step: 's2', q: 'When did you last receive breastfeeding training, and what did it include?', a: 'Within the last 2 years; state the course and key skills (positioning, attachment, hand expression, counselling, Code).' },
+  { who: 'Staff', step: 's3', q: 'What do you discuss with pregnant women about breastfeeding?', a: 'Importance; skin-to-skin and early initiation; colostrum; rooming-in; feeding on cue; positioning and attachment; exclusive breastfeeding 6 months; risks of formula, bottles and pacifiers; continue to 2 years.' },
+  { who: 'Staff', step: 's4', q: 'Describe what happens to a healthy baby in the first hour after a vaginal birth.', a: 'Dried and placed naked on mother’s chest within 5 min; uninterrupted ≥1 h; observed (face visible, breathing, colour); routine procedures delayed; mother helped to recognise readiness and initiate breastfeeding.' },
+  { who: 'Staff', step: 's4', q: 'How do you support skin-to-skin after a caesarean section?', a: 'Start in theatre or recovery as soon as the mother is alert; staff stay to keep the baby safe; if the mother cannot, the father can provide skin-to-skin until she can.' },
+  { who: 'Staff', step: 's5', q: 'Show me how you would help a mother position and attach her baby.', a: 'Four positioning points: in line, close, facing, supported. Wait for wide mouth, bring baby to breast, lower lip below nipple. Check: chin touching, lower lip out, more areola above. Prefer hands-off coaching.' },
+  { who: 'Staff', step: 's5', q: 'How would you teach a mother to hand express?', a: 'Wash hands, relax; thumb above, finger below the areola; press back to chest, compress, release; rotate around; switch breasts. Have her try it herself.' },
+  { who: 'Staff', step: 's5', q: 'A mother of a 30-week baby in NICU asks when she should start expressing.', a: 'Within 1–2 hours of birth if possible, at least 8 times in 24 h including at night; collect colostrum in a syringe; help her with hand expression and then pump.' },
+  { who: 'Staff', step: 's6', q: 'Name some acceptable medical reasons for giving a supplement to a breastfed baby.', a: 'Infant: galactosaemia, MSUD, PKU (with monitoring), <1500 g or <32 weeks, hypoglycaemia not responding to breastfeeding. Mother: severe illness, HSV-1 lesions on breast, radioactive iodine or chemotherapy, HIV per national guidance.' },
+  { who: 'Staff', step: 's6', q: 'A breastfed baby needs a supplement. How do you give it and what do you record?', a: 'Expressed breast milk first; by cup, spoon or syringe; document the medical reason and volume; counsel mother; continue supporting breastfeeding.' },
+  { who: 'Staff', step: 's7', q: 'When would a baby be separated from the mother on your ward?', a: 'Only for a medical reason, documented. Otherwise rooming-in 24 h a day including nights. If the baby goes to NICU, the mother has unrestricted access.' },
+  { who: 'Staff', step: 's8', q: 'What are the early signs that a baby wants to feed?', a: 'Stirring, eye movements, mouth opening, tongue out, turning head/rooting, sucking hand or fingers. Crying is late.' },
+  { who: 'Staff', step: 's9', q: 'What do you tell mothers about bottles, teats and pacifiers?', a: 'They can interfere with learning to breastfeed, reduce supply, mask cues and carry contamination risk; use cup or spoon if expressed milk is needed.' },
+  { who: 'Staff', step: 's10', q: 'Before discharge, what do you tell a mother about support at home?', a: 'Where to get help: Klinik Kesihatan follow-up/home visit, breastfeeding support group, ward or lactation contact; signs of adequate intake; danger signs.' },
+  { who: 'Mother', step: 's3', q: 'Did anyone talk to you about breastfeeding during your pregnancy? What did they say?', a: 'Expected answer: yes, with at least two topics (e.g. skin-to-skin after birth, colostrum, feeding on demand).' },
+  { who: 'Mother', step: 's4', q: 'After your baby was born, when was the baby placed on your chest, and for how long?', a: 'Expected answer: immediately / within 5 minutes, skin to skin, for at least 1 hour.' },
+  { who: 'Mother', step: 's5', q: 'Can you show me how you hold your baby to breastfeed?', a: 'Mother demonstrates the four positioning points and a good latch.' },
+  { who: 'Mother', step: 's5', q: 'Has anyone shown you how to express milk by hand? Can you show me?', a: 'Mother describes or demonstrates hand expression.' },
+  { who: 'Mother', step: 's6', q: 'Has your baby had anything other than breast milk since birth?', a: 'Expected answer: no, or yes with a medical reason she understands.' },
+  { who: 'Mother', step: 's7', q: 'Has your baby been with you all the time since birth?', a: 'Expected answer: yes, never separated more than 1 hour (unless medically needed).' },
+  { who: 'Mother', step: 's8', q: 'How do you know when your baby wants to feed?', a: 'Names at least two cues, e.g. opening mouth, turning head, sucking hand.' },
+  { who: 'Mother', step: 's9', q: 'What were you told about using bottles or pacifiers?', a: 'Can explain at least one risk (nipple confusion, less milk, hygiene).' },
+  { who: 'Mother', step: 's10', q: 'If you have a breastfeeding problem after going home, where will you get help?', a: 'Names a specific place: Klinik Kesihatan, support group, ward phone number.' },
+];
+
+/* Ward self-audit (based on 2018 indicators) */
+const AUDIT = [
+  { step: 's1a', items: ['No formula, bottle or teat branding anywhere in clinical areas', 'Formula purchased, not received free or at low cost', 'Staff accept no gifts or sponsorship from formula companies'] },
+  { step: 's1b', items: ['Policy summary displayed in maternity, postnatal and NICU areas in local languages', 'Staff can describe two policy elements', 'New staff are oriented to the policy'] },
+  { step: 's1c', items: ['Key practice data collected (skin-to-skin, exclusive BF, rooming-in)', 'Data reviewed with ward staff recently', 'Action plan exists for indicators below target'] },
+  { step: 's2', items: ['≥80% of clinical staff trained in the past 2 years', 'Competency of staff assessed and recorded', 'Non-clinical staff oriented'] },
+  { step: 's3', items: ['Antenatal breastfeeding counselling documented', 'No group instruction on formula preparation'] },
+  { step: 's4', items: ['Skin-to-skin within 5 min for ≥1 h after vaginal births', 'Skin-to-skin offered after caesarean as soon as mother responsive', 'Babies observed for safety during skin-to-skin'] },
+  { step: 's5', items: ['Mothers helped with positioning and attachment within 6 h', 'All mothers taught hand expression', 'NICU mothers helped to express within 1–2 h'] },
+  { step: 's6', items: ['Every supplement has a documented medical reason', 'Supplements given by cup, spoon or syringe', 'Formula stored out of sight'] },
+  { step: 's7', items: ['Rooming-in 24 h for healthy babies, including nights', 'Separations documented with reason', 'NICU parents have unrestricted access'] },
+  { step: 's8', items: ['Mothers can name two feeding cues', 'No fixed feeding schedules for healthy term babies'] },
+  { step: 's9', items: ['No routine bottles, teats or pacifiers', 'Mothers counselled on risks', 'Feeding cups available'] },
+  { step: 's10', items: ['Mothers told where to get help after discharge', 'Referral to Klinik Kesihatan / support group documented'] },
+];
+
+/* Facts for the daily card */
+const FACTS = [
+  ['Skin-to-skin', 'Within 5 minutes of birth, uninterrupted for at least 1 hour.'],
+  ['The 80% rule', 'Most BFHI indicators need at least 80% of sampled mothers or staff to meet them.'],
+  ['NICU expressing', 'Start within 1–2 hours, at least 8 times in 24 hours.'],
+  ['Breast milk is 88% water', 'Healthy breastfed babies need no water, even in hot weather.'],
+  ['Late cue', 'Crying means "calm me first, then feed me".'],
+  ['Wet nappies', 'More than 6 in 24 hours (after the first days) suggests enough milk.'],
+  ['EBM in the fridge', 'Healthy baby: under 8 days. Preterm or sick: 48 hours.'],
+  ['Warmed EBM', 'Use within 1 hour. Never microwave.'],
+  ['Training', '≥80% of health professionals trained in the previous 2 years.'],
+  ['Rooming-in', 'Mothers should not be separated from their baby for more than 1 hour without a medical reason.'],
+  ['Step 9 in 2018', 'Counsel on the use and risks of bottles, teats and pacifiers.'],
+  ['Colostrum', 'Yellow from beta-carotene; the baby’s first immunisation.'],
+  ['Attachment', 'Wide mouth, lower lip out, chin touching, more areola above.'],
+  ['Discharge', 'Every mother must know where to get breastfeeding help at home.'],
+];
+
+/* EBM storage rules (KKM / JKN Sarawak).
+   Each rule: {h: hours} | {d: days, counted inclusively as in the KKM label example} | {m: months}; null = not recommended.
+   healthy = term healthy baby, pre = preterm / sick baby. */
+const EBM = [
+  { id: 'room', label: 'Room temperature (25–37 °C)', healthy: { h: 4 }, pre: { h: 4 } },
+  { id: 'ac', label: 'Air-conditioned room (15–25 °C)', healthy: { h: 8 }, pre: null },
+  { id: 'cold', label: 'Air-conditioned room (below 15 °C)', healthy: { h: 24 }, pre: null },
+  { id: 'fridge', label: 'Fridge, main compartment (2–4 °C)', healthy: { d: 7 }, pre: { h: 48 }, note: 'If it will not be used within 5 days, move it to the freezer.' },
+  { id: 'f1', label: '1-door fridge, freezer compartment', healthy: { d: 14 }, pre: { d: 14 } },
+  { id: 'f2', label: '2-door fridge freezer (−20 °C)', healthy: { m: 3 }, pre: { m: 3 } },
+  { id: 'deep', label: 'Deep freezer (−20 °C)', healthy: { m: 6 }, pre: { m: 3 } },
+  { id: 'thaw', label: 'Thawed in fridge (from frozen)', healthy: { h: 24 }, pre: { h: 12 }, note: 'Thawed milk must not be refrozen. Once warmed, use within 1 hour.' },
+];
+
+</script>
+<script>
+(function(){
+'use strict';
+/* ---------- utilities ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const strip = h => h.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const DAY = 864e5;
+const todayKey = (d = new Date()) => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+const L = Object.fromEntries(LESSONS.map(l => [l.id, l]));
+const STEP_IDS = LESSONS.filter(l => l.sec === 'steps').map(l => l.id);
+
+const ICON = {
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg>',
+  learn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5zM12 6.5v13"/></svg>',
+  practice: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>',
+  tools: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>',
+  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  chev: '<svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l6 6-6 6"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.5L16 9.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>',
+  steps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 19h4v-4h4v-4h4V7h4"/></svg>',
+  exam: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M8.5 11l1.5 1.5L13 9.5M8.5 16.5h7" stroke-linecap="round"/></svg>',
+  bottle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M10 3h4v3l1.5 2.5V20a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V8.5L10 6z"/><path d="M8.5 12h7M8.5 16h7"/></svg>',
+  audit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h3M4 12h3M4 18h3"/><path d="M10 6l1.5 1.5L14 5M10 12l1.5 1.5L14 11"/><path d="M17 6h3M17 12h3M10 18h10"/></svg>',
+  chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+  pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8.5" width="18" height="7" rx="3.5" transform="rotate(-35 12 12)"/><path d="M9.5 8.3l5 7.4"/></svg>',
+  info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5" stroke-linecap="round"/></svg>',
+  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" stroke-linecap="round"/></svg>',
+  share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>',
+};
+
+/* ---------- storage ---------- */
+const KEY = 'bfhi-learn-v1';
+const DEF = { read: {}, srs: {}, audit: {}, mocks: [], streak: { d: '', n: 0 }, fs: 1, noInstall: false, ebm: { type: 'healthy', loc: 'fridge' } };
+let S;
+try { S = Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { S = JSON.parse(JSON.stringify(DEF)); }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+function touchStreak() {
+  const t = todayKey(), y = todayKey(new Date(Date.now() - DAY));
+  if (S.streak.d === t) return;
+  S.streak = { d: t, n: S.streak.d === y ? S.streak.n + 1 : 1 }; save();
+}
+function streakNow() { const t = todayKey(), y = todayKey(new Date(Date.now() - DAY)); return (S.streak.d === t || S.streak.d === y) ? S.streak.n : 0; }
+
+/* ---------- spaced repetition (Leitner) ---------- */
+const INTERVAL = [0, 10 * 60e3, 1 * DAY, 3 * DAY, 7 * DAY, 21 * DAY];
+function grade(qid, ok) {
+  const r = S.srs[qid] || { b: 0, d: 0, n: 0, c: 0 };
+  r.n++; if (ok) r.c++;
+  r.b = ok ? Math.min(5, Math.max(1, r.b) + 1) : 1;
+  if (ok && r.n === 1) r.b = 3; /* knew it cold on first sight */
+  r.d = Date.now() + INTERVAL[r.b];
+  S.srs[qid] = r; touchStreak(); save();
+}
+const dueList = () => QUESTIONS.filter(q => S.srs[q.id] && S.srs[q.id].d <= Date.now());
+const unseen = () => QUESTIONS.filter(q => !S.srs[q.id]);
+function mastery(step) {
+  const qs = QUESTIONS.filter(q => q.step === step); if (!qs.length) return 0;
+  return qs.reduce((a, q) => a + ((S.srs[q.id] || { b: 0 }).b / 5), 0) / qs.length;
+}
+function smartQueue(n = 10) {
+  const due = dueList().sort((a, b) => S.srs[a.id].b - S.srs[b.id].b || S.srs[a.id].d - S.srs[b.id].d);
+  const un = unseen().sort((a, b) => (S.read[b.step] ? 1 : 0) - (S.read[a.step] ? 1 : 0));
+  return due.concat(un).slice(0, n);
+}
+function nextDueIn() {
+  const ds = QUESTIONS.map(q => S.srs[q.id]).filter(Boolean).map(r => r.d).filter(d => d > Date.now());
+  if (!ds.length) return '';
+  const ms = Math.min(...ds) - Date.now();
+  if (ms < 3600e3) return Math.max(1, Math.round(ms / 60e3)) + ' min';
+  if (ms < DAY) return Math.round(ms / 3600e3) + ' h';
+  return Math.round(ms / DAY) + ' day' + (Math.round(ms / DAY) > 1 ? 's' : '');
+}
+
+/* ---------- navigation ---------- */
+let tab = 'home';
+const stacks = { home: [['home']], learn: [['learn']], practice: [['practice']], tools: [['tools']] };
+const scrollMem = {};
+const cur = () => stacks[tab][stacks[tab].length - 1];
+function go(view, ...args) {
+  scrollMem[tab + stacks[tab].length] = window.scrollY;
+  stacks[tab].push([view, ...args]);
+  try { history.pushState({ n: stacks[tab].length }, ''); } catch (e) {}
+  render(true); window.scrollTo(0, 0);
+}
+function replace(view, ...args) { stacks[tab][stacks[tab].length - 1] = [view, ...args]; render(true); window.scrollTo(0, 0); }
+function back() {
+  if (stacks[tab].length > 1) { stacks[tab].pop(); render(); window.scrollTo(0, scrollMem[tab + stacks[tab].length] || 0); }
+}
+function switchTab(t) {
+  if (t === tab) { if (stacks[t].length > 1) { stacks[t] = [stacks[t][0]]; render(); window.scrollTo(0, 0); } else window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+  scrollMem['tab-' + tab] = window.scrollY; tab = t; render(); window.scrollTo(0, scrollMem['tab-' + t] || 0);
+}
+window.addEventListener('popstate', () => { if (stacks[tab].length > 1) back(); });
+
+function setNav(title, opts = {}) {
+  $('#navT').textContent = title;
+  const depth = stacks[tab].length;
+  $('#navL').innerHTML = depth > 1 ? `<button class="navbtn" id="navBack" aria-label="Back">${ICON.back}<span>${esc(opts.backLabel || 'Back')}</span></button>` : '';
+  $('#navR').innerHTML = opts.right || '';
+  $('#nav').classList.toggle('solid', !!opts.solid);
+  const b = $('#navBack'); if (b) b.onclick = back;
+}
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 1800); }
+function copyText(text) {
+  const done = () => toast('Copied');
+  try { navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text)); } catch (e) { fallbackCopy(text); }
+}
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); toast('Copied'); } catch (e) { toast('Select and copy the text'); } ta.remove();
+}
+
+/* ---------- render ---------- */
+const VIEWS = {};
+function render(anim) {
+  const [v, ...args] = cur();
+  $$('.tab').forEach(b => b.setAttribute('aria-current', b.dataset.tab === tab ? 'page' : 'false'));
+  const due = dueList().length; const pb = $('#tab-practice .dotn');
+  if (due && !pb) $('#tab-practice').insertAdjacentHTML('beforeend', `<span class="dotn">${due}</span>`); else if (pb) { if (due) pb.textContent = due; else pb.remove(); }
+  const out = VIEWS[v](...args);
+  const view = $('#view'); view.innerHTML = out.html; view.classList.remove('view-enter');
+  if (anim) { void view.offsetWidth; view.classList.add('view-enter'); }
+  setNav(out.title, out);
+  mountWidgets(view);
+  $$('[data-go]', view).forEach(a => a.addEventListener('click', e => { e.preventDefault(); const g = a.dataset.go; if (g.startsWith('tool:')) { tab = 'tools'; stacks.tools = [['tools'], [g.slice(5)]]; render(true); window.scrollTo(0, 0); } else go('lesson', g); }));
+  $$('img[data-zoom]', view).forEach(i => i.closest('button').addEventListener('click', () => lightbox(i.src, i.alt)));
+  out.after && out.after(view);
+  onScroll();
+}
+function onScroll() { $('#nav').classList.toggle('scrolled', window.scrollY > 30); }
+window.addEventListener('scroll', onScroll, { passive: true });
+
+function lightbox(src, alt) {
+  const d = document.createElement('div'); d.className = 'lightbox'; d.setAttribute('role', 'dialog');
+  d.innerHTML = `<img src="${src}" alt="${esc(alt)}"><button type="button">Done</button>`;
+  d.querySelector('button').onclick = () => d.remove(); document.body.appendChild(d);
+}
+function ring(p, size = 84, label) {
+  const r = 34, c = 2 * Math.PI * r, off = c * (1 - p);
+  return `<svg class="ring" viewBox="0 0 84 84" width="${size}" height="${size}" aria-hidden="true">
+  <circle cx="42" cy="42" r="${r}" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width="8"/>
+  <circle cx="42" cy="42" r="${r}" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 42 42)"/>
+  <text x="42" y="48" text-anchor="middle" font-size="19" fill="currentColor">${label}</text></svg>`;
+}
+function listRow({ go: g, badge, done, title, sub, right, attr = '' }) {
+  return `<button class="row" ${g ? `data-nav="${g}"` : ''} ${attr}>${badge !== undefined ? `<span class="badge ${done ? 'done' : ''}">${badge}</span>` : ''}
+  <span class="tx"><span class="tt">${title}</span>${sub ? `<span class="ts">${sub}</span>` : ''}</span>${right || ''}${ICON.chev}</button>`;
+}
+function bindNav(view) { $$('[data-nav]', view).forEach(b => b.addEventListener('click', () => { const [v, ...a] = b.dataset.nav.split('|'); go(v, ...a); })); }
+const nextUnread = () => LESSONS.find(l => !S.read[l.id]);
+const isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const standalone = window.navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+let topLevel = true; try { topLevel = window.self === window.top; } catch (e) { topLevel = false; }
+
+/* ---------- HOME ---------- */
+VIEWS.home = () => {
+  const nRead = LESSONS.filter(l => S.read[l.id]).length, p = nRead / LESSONS.length;
+  const nx = nextUnread(); const due = dueList().length, un = unseen().length;
+  const f = FACTS[Math.floor(Date.now() / DAY) % FACTS.length];
+  const st = streakNow(); const lastMock = S.mocks[S.mocks.length - 1];
+  const mastered = QUESTIONS.filter(q => (S.srs[q.id] || {}).b >= 4).length;
+  const hr = new Date().getHours(); const greet = hr < 12 ? 'Selamat pagi' : hr < 15 ? 'Selamat tengah hari' : hr < 19 ? 'Selamat petang' : 'Selamat malam';
+  const showInstall = isIOS && !standalone && topLevel && !S.noInstall;
+  return { title: 'BFHI Learn', html: `
+  <div class="brand"><img src="icons/icon-192.png" alt="" width="56" height="56"><div><p class="sub" style="margin:0">${greet}</p><h1 class="lt" style="margin:0">BFHI Learn</h1></div></div>
+  ${showInstall ? `<div class="install" style="margin-bottom:12px">${ICON.share}<div style="flex:1"><p><b>Use it offline:</b> tap <b>Share</b> in Safari, then <b>Add to Home Screen</b>.</p></div><button class="linkbtn" id="noInst" style="padding:0 4px">Hide</button></div>` : ''}
+  <div class="stack">
+    <div class="hero">
+      ${ring(p, 84, Math.round(p * 100) + '%')}
+      <div style="min-width:0">
+        <div class="k">${nRead === LESSONS.length ? 'All lessons done' : nRead + ' of ' + LESSONS.length + ' lessons'}</div>
+        <div class="m">${st ? st + '-day streak · ' : ''}${mastered} of ${QUESTIONS.length} questions mastered</div>
+        ${nx ? `<button class="btn" data-nav="lesson|${nx.id}">${nRead ? 'Continue' : 'Start'}: ${esc(nx.title)}</button>` : `<button class="btn" data-nav="mock">Take a mock assessment</button>`}
+      </div>
+    </div>
+    <button class="card row" style="padding:14px 16px" id="goReview">
+      <span class="badge" style="background:var(--warm-soft);color:var(--warm)">${due || un ? (due || un) : '✓'}</span>
+      <span class="tx"><span class="tt">Smart review</span><span class="ts">${due ? due + ' card' + (due > 1 ? 's' : '') + ' due now' : un ? un + ' new questions to try' : 'All caught up · next in ' + nextDueIn()}</span></span>${ICON.chev}
+    </button>
+    <div class="fact"><span class="e">Today’s key fact</span><b>${esc(f[0])}</b><span>${esc(f[1])}</span></div>
+  </div>
+  <h2 class="sh">Quick start</h2>
+  <div class="grid2">
+    <button class="tile" data-tabgo="learn">${ICON.steps}<div><b>The Ten Steps</b><br><span>2018 revision</span></div></button>
+    <button class="tile" data-nav="mock">${ICON.exam}<div><b>Mock assessment</b><br><span>${lastMock ? 'Last: ' + lastMock.s + '%' : '20 questions'}</span></div></button>
+    <button class="tile" data-nav="flash">${ICON.chat}<div><b>Assessor interview</b><br><span>Staff & mother questions</span></div></button>
+    <button class="tile" data-tool="ebm">${ICON.bottle}<div><b>EBM label</b><br><span>Use-by calculator</span></div></button>
+  </div>`,
+  after(v) {
+    bindNav(v);
+    $('#goReview').onclick = () => { tab = 'practice'; stacks.practice = [['practice'], ['quiz', 'smart']]; render(true); window.scrollTo(0, 0); };
+    $$('[data-tabgo]', v).forEach(b => b.onclick = () => switchTab(b.dataset.tabgo));
+    $$('[data-tool]', v).forEach(b => b.onclick = () => { tab = 'tools'; stacks.tools = [['tools'], [b.dataset.tool]]; render(true); window.scrollTo(0, 0); });
+    const ni = $('#noInst'); if (ni) ni.onclick = () => { S.noInstall = true; save(); render(); };
+  } };
+};
+
+/* ---------- LEARN ---------- */
+let searchQ = '';
+VIEWS.learn = () => {
+  const lessonRows = sec => LESSONS.filter(l => l.sec === sec).map(l => listRow({ go: 'lesson|' + l.id, badge: l.badge, done: S.read[l.id], title: esc(l.title), sub: esc(l.short) })).join('');
+  return { title: 'Learn', html: `
+  <h1 class="lt" style="margin-top:12px">Learn</h1>
+  <div class="search">${ICON.search}<input id="q" type="search" placeholder="Search lessons, e.g. skin-to-skin" value="${esc(searchQ)}" autocomplete="off" enterkeyhint="search" aria-label="Search lessons"></div>
+  <div id="results"></div>
+  <div id="secs"><h2 class="sh">Ten Steps at a glance</h2><div class="card"><div class="widget" data-widget="journey"></div></div>${SECTIONS.map(s => `<h2 class="sh">${esc(s.title)}</h2><p class="sh-desc">${esc(s.sub)}</p><div class="group">${lessonRows(s.id)}</div>`).join('')}</div>`,
+  after(v) {
+    bindNav(v);
+    const q = $('#q'), res = $('#results'), secs = $('#secs');
+    const run = () => {
+      searchQ = q.value.trim(); const t = searchQ.toLowerCase();
+      if (!t) { res.innerHTML = ''; secs.hidden = false; return; }
+      secs.hidden = true;
+      const hits = LESSONS.map(l => { const txt = strip(l.title + ' ' + l.short + ' ' + l.body + ' ' + (l.checks || []).join(' ')); const i = txt.toLowerCase().indexOf(t); return i < 0 ? null : { l, i, txt }; }).filter(Boolean);
+      const qh = QUESTIONS.filter(x => (x.q + ' ' + x.w).toLowerCase().includes(t)).length;
+      const hl = s => esc(s).replace(new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), m => `<mark>${m}</mark>`);
+      res.innerHTML = hits.length ? `<h2 class="sh">${hits.length} lesson${hits.length > 1 ? 's' : ''}</h2><div class="group">${hits.map(h => {
+        const s = Math.max(0, h.i - 30); const snip = (s ? '…' : '') + h.txt.slice(s, h.i + t.length + 60) + '…';
+        return listRow({ go: 'lesson|' + h.l.id, badge: h.l.badge, done: S.read[h.l.id], title: esc(h.l.title), sub: hl(snip) });
+      }).join('')}</div>${qh ? `<p class="muted small" style="margin:10px 4px">${qh} quiz question${qh > 1 ? 's' : ''} also mention this.</p>` : ''}` : `<div class="empty">No lessons mention “${esc(searchQ)}”.</div>`;
+      bindNav(res);
+    };
+    q.addEventListener('input', run); run();
+  } };
+};
+
+VIEWS.lesson = id => {
+  const l = L[id]; const sib = LESSONS.filter(x => x.sec === l.sec); const i = sib.indexOf(l);
+  const all = LESSONS.indexOf(l); const next = LESSONS[all + 1], prev = LESSONS[all - 1];
+  const sec = SECTIONS.find(s => s.id === l.sec);
+  const nq = QUESTIONS.filter(q => q.step === id).length;
+  return { title: l.title, backLabel: stacks[tab].length > 2 ? 'Back' : (tab === 'learn' ? 'Learn' : 'Back'), html: `
+  <div class="lhead"><span class="badge ${S.read[id] ? 'done' : ''}">${l.badge}</span><div style="min-width:0"><p class="small">${esc(sec.title)} · ${i + 1} of ${sib.length}</p><h1>${esc(l.title)}</h1></div></div>
+  <div id="swipe">
+  ${l.img ? fig(l.img, l.imgAlt, 'Tap to enlarge · National Lactation Centre, KKM') : ''}
+  <div class="prose">${richBody(l.body)}</div>
+  ${l.img2 ? `<div style="margin-top:12px">${fig(l.img2, l.img2Alt, 'Tap to enlarge · National Lactation Centre, KKM')}</div>` : ''}
+  ${l.checks && l.checks.length ? `<h2 class="sh">What assessors look for</h2><div class="card"><ul class="checks">${l.checks.map(c => `<li>${ICON.check}<span>${esc(c)}</span></li>`).join('')}</ul></div>` : ''}
+  ${l.bm ? `<h2 class="sh">Say it to mothers</h2><div class="say"><span class="e">Bahasa Malaysia <button class="linkbtn" id="cpy" style="min-height:0;padding:0;display:inline-flex;gap:4px;align-items:center">${ICON.copy}Copy</button></span><p lang="ms">${esc(l.bm)}</p></div>` : ''}
+  <div class="row-btns" style="margin-top:22px">
+    ${nq ? `<button class="btn sec" id="quizMe">Quiz me (${nq})</button>` : ''}
+    <button class="btn" id="doneNext">${next ? 'Done · Next' : 'Mark as done'}</button>
+  </div>
+  <p class="swipehint">Swipe left or right to move between lessons</p>
+  </div>`,
+  after(v) {
+    const finish = () => { if (!S.read[id]) { S.read[id] = Date.now(); touchStreak(); save(); } };
+    $('#doneNext').onclick = () => { finish(); if (next) replace('lesson', next.id); else { toast('All lessons complete'); back(); } };
+    const qm = $('#quizMe'); if (qm) qm.onclick = () => { finish(); go('quiz', 'topic', id); };
+    const cp = $('#cpy'); if (cp) cp.onclick = () => copyText(l.bm);
+    let sx, sy, st, ignore;
+    const sw = $('#swipe');
+    sw.addEventListener('touchstart', e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); ignore = !!e.target.closest('.tbl-wrap,.widget'); }, { passive: true });
+    sw.addEventListener('touchend', e => {
+      if (ignore || sx == null) return; const t = e.changedTouches[0]; const dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) > 70 && Math.abs(dy) < 50 && Date.now() - st < 600) { if (dx < 0 && next) replace('lesson', next.id); else if (dx > 0 && prev) replace('lesson', prev.id); }
+      sx = null;
+    }, { passive: true });
+  } };
+};
+
+/* ---------- interactive diagrams ---------- */
+const CUE_STAGES = [
+  { k: 'Early', say: '"I’m hungry"', act: 'Feed now', c: 'var(--good)', soft: 'var(--good-soft)', items: ['Stirring', 'Mouth opening', 'Turning head'] },
+  { k: 'Mid', say: '"I’m really hungry"', act: 'Feed soon', c: 'var(--warn)', soft: 'var(--warn-soft)', items: ['Stretching', 'More movement', 'Hand to mouth'] },
+  { k: 'Late', say: '"Calm me, then feed me"', act: 'Calm first, then feed', c: 'var(--bad)', soft: 'var(--bad-soft)', items: ['Crying', 'Agitated movements', 'Turning red'] },
+];
+const fig = (src, alt, cap) => `<button class="figure" type="button" aria-label="Enlarge image"><img data-zoom src="${src}" alt="${esc(alt)}" loading="lazy"><span class="cap">${esc(cap || 'Tap to enlarge')}</span></button>`;
+let wid = 0;
+const W = {
+  journey: el => {
+    const phases = [
+      { t: 'Whole hospital', s: 'Before any mother arrives', ic: '🏥', steps: ['s1a', 's1b', 's1c', 's2'] },
+      { t: 'Pregnancy', s: 'Antenatal clinic', ic: '🤰', steps: ['s3'] },
+      { t: 'Birth', s: 'Labour room & theatre', ic: '👶', steps: ['s4'] },
+      { t: 'Postnatal stay', s: 'Ward, NICU & SCN', ic: '🤱', steps: ['s5', 's6', 's7', 's8', 's9'] },
+      { t: 'Going home', s: 'Discharge & community', ic: '🏠', steps: ['s10'] },
+    ];
+    el.innerHTML = `<div class="journey">${phases.map((p, i) => `<div class="jp"><span class="jn" aria-hidden="true">${i + 1}</span><div class="jb"><b>${p.t}</b><span class="muted small">${p.s}</span>
+      <div class="chips">${p.steps.map(id => `<button class="chip ${S.read[id] ? 'done' : ''}" data-go="${id}" title="${esc(L[id].title)}"><b>${L[id].badge}</b> ${esc(L[id].title)}</button>`).join('')}</div></div></div>`).join('')}</div>
+      <p class="small muted" style="margin:8px 2px 0">Steps 1–2 are <b>critical management procedures</b>; Steps 3–10 are <b>key clinical practices</b>. Filled chips are lessons you have finished.</p>`;
+  },
+
+  goldenHour: el => {
+    const P = [
+      { m: 0, t: 'Birth', d: 'Dry the baby and place naked, tummy down, on the mother’s bare chest. Cover both with a warm cloth. Keep the face visible.' },
+      { m: 5, t: '5 min', d: 'Skin-to-skin should have started by now. This is the BFHI indicator: within 5 minutes of birth.' },
+      { m: 30, t: '15–45 min', d: 'The baby wakes, roots, and crawls toward the breast. Watch and support; do not push the baby onto the breast.' },
+      { m: 60, t: '60 min', d: 'Keep contact going for at least 1 hour, or until the first breastfeed is complete. Most babies self-attach within the first hour.' },
+      { m: 75, t: 'After', d: 'Now weigh, examine, give vitamin K and eye care. These can wait until skin-to-skin and the first feed are done.' },
+    ];
+    const XS = [6, 28, 50, 72, 94]; const x = m => XS[P.findIndex(p => p.m === m)];
+    el.innerHTML = `<div class="gh"><div class="gh-track"><div class="gh-fill"></div>${P.map((p, i) => `<button class="gh-pt" style="left:${x(p.m)}%" data-i="${i}" aria-label="${p.t}"><span></span><em>${p.t}</em></button>`).join('')}</div>
+      <div class="gh-band" style="left:${x(0)}%;width:${x(60) - x(0)}%">Uninterrupted skin-to-skin · ≥ 1 hour</div>
+      <div class="gh-d" aria-live="polite"></div></div>`;
+    const sel = i => { $$('.gh-pt', el).forEach((b, k) => b.classList.toggle('on', k === i)); $('.gh-fill', el).style.width = x(P[i].m) + '%'; $('.gh-d', el).innerHTML = `<b>${P[i].t}</b> ${esc(P[i].d)}`; };
+    $$('.gh-pt', el).forEach(b => b.onclick = () => sel(+b.dataset.i)); sel(0);
+  },
+
+  cueSlider: el => {
+    const id = 'cs' + (++wid);
+    el.innerHTML = `<div class="cs"><div class="cs-img"><img alt="" id="${id}i" src="img/cue-00.jpg"><span class="cs-tag" id="${id}t"></span></div>
+      <div class="cs-body"><div class="cs-head"><b id="${id}k"></b><span id="${id}s" class="muted small"></span></div>
+      <div class="cs-act" id="${id}a"></div>
+      <label class="flabel" for="${id}r">Slide from early to late</label>
+      <input type="range" min="0" max="8" value="0" id="${id}r" class="cs-range">
+      <div class="cs-scale"><span>Early</span><span>Mid</span><span>Late</span></div></div></div>`;
+    const r = $('#' + id + 'r', el);
+    const draw = () => {
+      const v = +r.value, st = CUE_STAGES[Math.floor(v / 3)], it = st.items[v % 3];
+      $('#' + id + 'i', el).src = `img/cue-${Math.floor(v / 3)}${v % 3}.jpg`; $('#' + id + 'i', el).alt = 'Baby showing feeding cue: ' + it;
+      $('#' + id + 't', el).textContent = it; $('#' + id + 'k', el).textContent = st.k + ' cue'; $('#' + id + 's', el).textContent = st.say;
+      const a = $('#' + id + 'a', el); a.textContent = st.act; a.style.background = st.soft; a.style.color = st.c;
+      el.querySelector('.cs').style.setProperty('--cc', st.c);
+    };
+    r.addEventListener('input', draw); draw();
+  },
+
+  stomach: el => {
+    const D = [
+      { d: 'Day 1', v: '5–7 ml', n: 6, o: 'a cherry' },
+      { d: 'Day 3', v: '22–27 ml', n: 25, o: 'a walnut' },
+      { d: 'Day 7', v: '45–60 ml', n: 52, o: 'an apricot' },
+      { d: '1 month', v: '80–150 ml', n: 115, o: 'a large egg' },
+    ];
+    el.innerHTML = `<div class="stm"><div class="seg" role="group" aria-label="Baby's age">${D.map((x, i) => `<button data-i="${i}" aria-pressed="${i === 0}">${x.d}</button>`).join('')}</div>
+      <svg viewBox="0 0 320 170" role="img" aria-label="Stomach size comparison"><g id="stmc"></g></svg><p class="stm-t" aria-live="polite"></p></div>`;
+    const draw = i => {
+      $$('[data-i]', el).forEach(b => b.setAttribute('aria-pressed', +b.dataset.i === i));
+      const cx = [44, 112, 196, 278];
+      $('#stmc', el).innerHTML = D.map((x, k) => { const r = 9 + Math.cbrt(x.n / 115) * 31; return `<circle cx="${cx[k]}" cy="${92}" r="${r}" fill="${k === i ? 'var(--warm)' : 'var(--surface)'}" stroke="${k === i ? 'var(--warm)' : 'var(--line)'}" stroke-width="1.5" style="transition:fill .3s"/>
+        <text x="${cx[k]}" y="160" text-anchor="middle" font-size="12" fill="${k === i ? 'var(--ink)' : 'var(--muted)'}" font-weight="${k === i ? 700 : 500}">${x.d}</text>`; }).join('');
+      $('.stm-t', el).innerHTML = `<b>${D[i].d}:</b> about <b>${D[i].v}</b> per feed, the size of ${D[i].o}. ${i === 0 ? 'Small amounts of colostrum are exactly right; frequent feeds, not formula, build supply.' : i === 1 ? 'Milk "comes in" around now. Expect 8–12 feeds a day.' : ''}`;
+    };
+    $$('[data-i]', el).forEach(b => b.onclick = () => draw(+b.dataset.i)); draw(0);
+  },
+
+  supplyLoop: el => {
+    const N = [
+      { t: 'Baby suckles', d: 'Frequent, well-attached suckling, day and night, is the trigger for everything else.', x: 170, y: 30 },
+      { t: 'Brain signal', d: 'Nerves in the nipple and areola send messages to the mother’s pituitary gland.', x: 284, y: 115 },
+      { t: 'Hormones', d: '<b>Prolactin</b> makes milk for the next feed (higher at night). <b>Oxytocin</b> lets the milk flow now. Stress and pain can block oxytocin; calm, comfort and thinking about the baby help.', x: 170, y: 200 },
+      { t: 'Milk removed', d: 'When the breast is emptied, production speeds up. Milk left in a full breast signals the body to make less.', x: 56, y: 115 },
+    ];
+    el.innerHTML = `<div class="loop"><svg viewBox="0 0 340 232" role="img" aria-label="Milk supply cycle">
+      <circle cx="170" cy="115" r="84" fill="none" stroke="var(--soft)" stroke-width="14"/>
+      <circle class="loop-run" cx="170" cy="115" r="84" fill="none" stroke="var(--brand)" stroke-width="3" stroke-dasharray="10 12" stroke-linecap="round"/>
+      <text x="170" y="110" text-anchor="middle" font-size="12" fill="var(--muted)">More milk out</text>
+      <text x="170" y="128" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--brand)">= more milk made</text>
+      ${N.map((n, i) => `<g class="loop-n" data-i="${i}" tabindex="0" role="button" aria-label="${n.t}"><rect x="${n.x - 52}" y="${n.y - 17}" width="104" height="34" rx="17" fill="var(--surface)" stroke="var(--brand)" stroke-width="1.5"/><text x="${n.x}" y="${n.y + 4}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">${n.t}</text></g>`).join('')}
+      </svg><p class="loop-d" aria-live="polite"></p></div>`;
+    const sel = i => { $$('.loop-n', el).forEach((g, k) => g.classList.toggle('on', k === i)); $('.loop-d', el).innerHTML = `<b>${i + 1}. ${i === 2 ? 'Prolactin & oxytocin' : N[i].t}.</b> ${N[i].d}`; };
+    $$('.loop-n', el).forEach(g => { g.onclick = () => sel(+g.dataset.i); g.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sel(+g.dataset.i); } }; }); sel(0);
+  },
+
+  latchSteps: el => stepper(el, [
+    { img: 'img/latch-art.jpg', strip: 3, pos: 0, t: 'Mouth wide open', d: 'Touch the baby’s lips with the nipple and wait for a wide gape, like a yawn. Nose opposite the nipple.' },
+    { img: 'img/latch-art.jpg', strip: 3, pos: 1, t: 'Chin to breast, lower lip out', d: 'Bring the baby quickly to the breast, chin first. The lower lip curls outward onto the areola.' },
+    { img: 'img/latch-art.jpg', strip: 3, pos: 2, t: 'Most of the lower areola in', d: 'Cheeks rounded, more areola visible above the top lip than below. Slow deep sucks follow.' },
+    { img: 'img/latch-steps.jpg', t: 'See it in real life', d: 'The same three stages in photos (National Lactation Centre, KKM).' },
+  ]),
+
+  expressSteps: el => stepper(el, [
+    { img: 'img/express-1.jpg', t: 'Wash and relax', d: 'Wash hands. Sit comfortably; milk flows better when the mother is calm and thinking of her baby.' },
+    { img: 'img/express-2.jpg', t: 'Place thumb and finger', d: 'Thumb above the areola, first finger opposite below it, where the breast feels lumpy (milk ducts). Other fingers support the breast.' },
+    { img: 'img/express-3.jpg', t: 'Press · compress · release', d: 'Press back toward the chest wall, compress between thumb and finger, then release. Repeat rhythmically.', rhythm: true },
+    { img: 'img/express-dont.jpg', t: 'Rotate, and avoid these', d: 'Move around the areola to empty all segments, then switch breasts. Avoid squeezing the nipple or sliding fingers along the skin.' },
+  ]),
+
+  storageChart: el => {
+    const H = { h: x => x.h, d: x => x.d * 24, m: x => x.m * 730 };
+    const hours = r => r ? (r.h ? r.h : r.d ? r.d * 24 : r.m * 730) : 0;
+    const ticks = [[1, '1 h'], [4, '4 h'], [24, '1 day'], [168, '1 wk'], [730, '1 mo'], [4380, '6 mo']];
+    const lx = 132, rx = 312, sc = h => lx + (Math.log10(h) / Math.log10(4380)) * (rx - lx);
+    const short = { room: 'Room 25–37 °C', ac: 'Aircond 15–25 °C', cold: 'Aircond <15 °C', fridge: 'Fridge 2–4 °C', f1: '1-door freezer', f2: '2-door freezer', deep: 'Deep freezer', thaw: 'Thawed (fridge)' };
+    el.innerHTML = `<div class="sc"><div class="seg" role="group" aria-label="Baby"><button data-t="healthy" aria-pressed="true">Healthy term</button><button data-t="pre" aria-pressed="false">Preterm / sick</button></div>
+      <div class="sc-wrap"><svg viewBox="0 0 324 ${EBM.length * 26 + 34}" role="img" aria-label="Storage time chart, logarithmic scale"><g class="sc-g"></g></svg></div>
+      <p class="small muted" style="margin:4px 0 0">Bars are on a log scale so hours and months fit together. Tap a bar for the exact time.</p><p class="sc-d small" aria-live="polite"></p></div>`;
+    const draw = t => {
+      $$('[data-t]', el).forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t));
+      const top = 8; let g = ticks.map(([h, l]) => `<line x1="${sc(h)}" x2="${sc(h)}" y1="${top}" y2="${top + EBM.length * 26}" stroke="var(--line)"/><text x="${sc(h)}" y="${top + EBM.length * 26 + 16}" text-anchor="middle" font-size="10" fill="var(--muted)">${l}</text>`).join('');
+      g += EBM.map((r, i) => { const v = hours(r[t]); const y = top + i * 26; const frozen = /f1|f2|deep/.test(r.id);
+        return `<text x="0" y="${y + 16}" font-size="11.5" fill="var(--ink)">${short[r.id]}</text>` + (v ? `<rect class="sc-bar" data-i="${i}" x="${lx}" y="${y + 5}" width="${Math.max(4, sc(v) - lx)}" height="15" rx="4" fill="${frozen ? 'var(--brand)' : r.id === 'thaw' ? 'var(--warn)' : 'var(--warm)'}"/>` : `<text x="${lx + 2}" y="${y + 16}" font-size="11" fill="var(--bad)" font-weight="700">Not recommended</text>`); }).join('');
+      $('.sc-g', el).innerHTML = g;
+      $$('.sc-bar', el).forEach(b => b.onclick = () => { const r = EBM[+b.dataset.i]; $('.sc-d', el).innerHTML = `<b>${esc(r.label)}:</b> ${ruleText(r[t])}${r.note ? '. ' + esc(r.note) : ''}`; });
+      $('.sc-d', el).textContent = '';
+    };
+    $$('[data-t]', el).forEach(b => b.onclick = () => draw(b.dataset.t)); draw('healthy');
+  },
+
+  latchCompare: el => {
+    const flip = Math.random() < .5;
+    const A = [{ src: 'img/latch-good.jpg', good: true }, { src: 'img/latch-poor.jpg', good: false }]; if (flip) A.reverse();
+    el.innerHTML = `<div class="lc">${A.map((a, i) => `<button class="lc-o" data-g="${a.good}"><img src="${a.src}" alt="Attachment drawing ${'AB'[i]}"><span>${'AB'[i]}</span></button>`).join('')}</div><div class="lc-d" aria-live="polite"><span class="muted small">Tap the drawing that shows good attachment.</span></div>`;
+    $$('.lc-o', el).forEach(b => b.onclick = () => {
+      const ok = b.dataset.g === 'true';
+      $$('.lc-o', el).forEach(x => x.classList.add(x.dataset.g === 'true' ? 'right' : 'wrong'));
+      $('.lc-d', el).innerHTML = `<div class="feedback ${ok ? 'good' : 'bad'}"><b>${ok ? 'Correct' : 'Look again'}</b>Good attachment: chin pressed into the breast, mouth wide, lower lip out, and more dark areola visible above the top lip. In the poor latch the chin is away and almost all the areola is outside the mouth, so the baby sucks on the nipple.</div>`;
+    });
+  },
+
+  codeSort: el => {
+    const items = shuffle([
+      ['Formula bought through normal hospital procurement', true],
+      ['Free tins of formula delivered to the ward', false],
+      ['Pens and notepads carrying a formula brand', false],
+      ['Scientific, factual product information given to doctors', true],
+      ['Discharge gift bag with formula samples', false],
+      ['A formula company’s "mothercraft" talk for pregnant women', false],
+      ['Formula kept in a closed cupboard out of mothers’ view', true],
+      ['A company-sponsored dinner for the nursing team', false],
+      ['One-to-one teaching on safe formula preparation for a mother who needs it', true],
+      ['A clinic poster of a smiling baby with a growing-up milk logo', false],
+    ]);
+    let i = 0, score = 0;
+    const draw = () => {
+      if (i >= items.length) { el.innerHTML = `<div class="cs-done"><div class="score">${score}/${items.length}</div><p>correct</p><button class="btn sec" id="csAgain">Play again</button></div>`; $('#csAgain', el).onclick = () => W.codeSort(el); return; }
+      el.innerHTML = `<div class="sort"><div class="qtop"><div class="bar"><i style="width:${i / items.length * 100}%"></i></div><span class="qcount">${i + 1}/${items.length}</span></div>
+        <div class="sort-card">${esc(items[i][0])}</div>
+        <div class="row-btns"><button class="btn" style="background:var(--good);color:var(--surface)" data-a="1">Allowed</button><button class="btn" style="background:var(--bad);color:var(--surface)" data-a="0">Violation</button></div><div class="sort-fb" aria-live="polite"></div></div>`;
+      $$('[data-a]', el).forEach(b => b.onclick = () => {
+        const ok = (b.dataset.a === '1') === items[i][1]; if (ok) score++;
+        $$('[data-a]', el).forEach(x => x.disabled = true);
+        $('.sort-fb', el).innerHTML = `<div class="feedback ${ok ? 'good' : 'bad'}"><b>${ok ? 'Correct' : 'Not quite'}</b>${items[i][1] ? 'This is allowed under the Code.' : 'This breaks the Code: it promotes products or creates a conflict of interest.'}<div style="text-align:right;margin-top:8px"><button class="btn" id="srtN">Next</button></div></div>`;
+        $('#srtN', el).onclick = () => { i++; draw(); };
+      });
+    };
+    draw();
+  },
+};
+
+function stepper(el, steps) {
+  let i = 0;
+  el.innerHTML = `<div class="stp"><div class="stp-img"></div><div class="stp-b"><span class="stp-n"></span><b class="stp-t"></b><p class="stp-d"></p><div class="stp-r"></div>
+    <div class="stp-nav"><button class="btn ghost" data-d="-1" aria-label="Previous step">‹</button><div class="dots">${steps.map((_, k) => `<i data-k="${k}"></i>`).join('')}</div><button class="btn" data-d="1" aria-label="Next step">›</button></div></div></div>`;
+  let timer = null;
+  const draw = () => {
+    const s = steps[i]; clearInterval(timer);
+    $('.stp-img', el).innerHTML = s.strip ? `<div class="strip" style="aspect-ratio:${300 / 204}"><img src="${s.img}" alt="${esc(s.t)}" style="width:${s.strip * 100}%;transform:translateX(-${s.pos / s.strip * 100}%)"></div>` : `<img src="${s.img}" alt="${esc(s.t)}">`;
+    $('.stp-n', el).textContent = `Step ${i + 1} of ${steps.length}`; $('.stp-t', el).textContent = s.t; $('.stp-d', el).textContent = s.d;
+    $$('.dots i', el).forEach((d, k) => d.classList.toggle('on', k === i));
+    $('[data-d="-1"]', el).disabled = i === 0; $('[data-d="1"]', el).disabled = i === steps.length - 1;
+    const rr = $('.stp-r', el);
+    rr.innerHTML = s.rhythm ? `<button class="btn sec" id="rhy">▶ Practise the rhythm</button><div class="rhy" hidden><span class="rhy-dot"></span><b class="rhy-w">Press</b></div>` : '';
+    if (s.rhythm) $('#rhy', el).onclick = () => {
+      const box = $('.rhy', el), w = $('.rhy-w', el), dot = $('.rhy-dot', el); if (timer) { clearInterval(timer); timer = null; box.hidden = true; $('#rhy', el).textContent = '▶ Practise the rhythm'; return; }
+      box.hidden = false; $('#rhy', el).textContent = '■ Stop'; const words = ['Press back', 'Compress', 'Release']; let k = 0;
+      const tick = () => { w.textContent = words[k % 3]; dot.className = 'rhy-dot s' + (k % 3); k++; }; tick(); timer = setInterval(tick, 1100);
+    };
+  };
+  $$('[data-d]', el).forEach(b => b.onclick = () => { i = Math.max(0, Math.min(steps.length - 1, i + +b.dataset.d)); draw(); });
+  $$('.dots i', el).forEach(d => d.onclick = () => { i = +d.dataset.k; draw(); });
+  let sx = null; const im = $('.stp-img', el);
+  im.addEventListener('touchstart', e => { sx = e.touches[0].clientX; e.stopPropagation(); }, { passive: true });
+  im.addEventListener('touchend', e => { e.stopPropagation(); if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) { i = Math.max(0, Math.min(steps.length - 1, i + (dx < 0 ? 1 : -1))); draw(); } sx = null; });
+  draw();
+}
+function mountWidgets(root) { $$('[data-widget]', root).forEach(el => { const f = W[el.dataset.widget]; if (f) try { f(el); } catch (e) { el.textContent = ''; } }); }
+function richBody(html) {
+  return html.replace(/\{\{fig:([^|}]+)\|([^|}]*)\|?([^}]*)\}\}/g, (_, s, a, c) => fig(s, a, c))
+             .replace(/\{\{w:(\w+)\}\}/g, (_, n) => `<div class="widget" data-widget="${n}"></div>`);
+}
+
+/* ---------- PRACTICE ---------- */
+VIEWS.practice = () => {
+  const due = dueList().length, un = unseen().length;
+  const counts = [0, 0, 0, 0, 0, 0]; QUESTIONS.forEach(q => counts[(S.srs[q.id] || { b: 0 }).b]++);
+  const seg = [['New', counts[0], 'var(--surface2)'], ['Learning', counts[1] + counts[2], 'var(--warm)'], ['Reviewing', counts[3], 'var(--warn)'], ['Mastered', counts[4] + counts[5], 'var(--brand)']];
+  const best = S.mocks.length ? Math.max(...S.mocks.map(m => m.s)) : null;
+  const topics = LESSONS.filter(l => QUESTIONS.some(q => q.step === l.id));
+  return { title: 'Practice', html: `
+  <h1 class="lt" style="margin-top:12px">Practice</h1>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><b style="font-size:1.0625rem">Smart review</b><span class="pill ${due ? 'warn' : 'good'}">${due ? due + ' due' : 'Up to date'}</span></div>
+    <p class="muted small" style="margin:4px 0 0">Questions you miss come back sooner. Questions you know come back after 1, 3, 7 and 21 days.</p>
+    <div class="boxes">${seg.map(s => `<i style="width:${s[1] / QUESTIONS.length * 100}%;background:${s[2]}"></i>`).join('')}</div>
+    <div class="legend">${seg.map(s => `<span style="--c:${s[2]}">${s[0]} ${s[1]}</span>`).join('')}</div>
+    <button class="btn block" style="margin-top:14px" data-nav="quiz|smart">${due ? 'Review ' + Math.min(due, 10) + ' due' : un ? 'Learn ' + Math.min(un, 10) + ' new' : 'Practise anyway'}</button>
+  </div>
+  <h2 class="sh">Assessment practice</h2>
+  <div class="group">
+    ${listRow({ go: 'mock', badge: ICON.exam.replace('<svg', '<svg width="20" height="20"'), title: 'Mock assessment', sub: '20 questions across all steps · pass 80%' + (best !== null ? ' · best ' + best + '%' : '') })}
+    ${listRow({ go: 'flash', badge: ICON.chat.replace('<svg', '<svg width="20" height="20"'), title: 'Assessor interview drill', sub: INTERVIEW.length + ' questions assessors ask staff and mothers' })}
+  </div>
+  <h2 class="sh">Quiz by topic</h2>
+  <div class="group">${topics.map(l => { const m = mastery(l.id); return listRow({ go: 'quiz|topic|' + l.id, badge: l.badge, done: m >= .8, title: esc(l.title), sub: QUESTIONS.filter(q => q.step === l.id).length + ' questions', right: `<span class="meter" title="${Math.round(m * 100)}% mastered"><i style="width:${m * 100}%"></i></span>` }); }).join('')}</div>`,
+  after: bindNav };
+};
+
+/* quiz engine */
+let Q = null;
+function startQuiz(mode, arg) {
+  let items;
+  if (mode === 'smart') { items = smartQueue(10); if (!items.length) items = shuffle(QUESTIONS).sort((a, b) => (S.srs[a.id] || {}).b - (S.srs[b.id] || {}).b).slice(0, 10); }
+  else if (mode === 'topic') items = shuffle(QUESTIONS.filter(q => q.step === arg));
+  else if (mode === 'mock') {
+    const per = STEP_IDS.map(s => shuffle(QUESTIONS.filter(q => q.step === s))[0]).filter(Boolean);
+    const rest = shuffle(QUESTIONS.filter(q => !per.includes(q))).slice(0, 20 - per.length);
+    items = shuffle(per.concat(rest));
+  } else if (mode === 'retry') items = arg;
+  Q = { mode, arg, items: items.map(q => ({ q, order: shuffle(q.o.map((_, i) => i)) })), i: 0, ans: [], answered: false };
+}
+VIEWS.quiz = (mode, arg) => {
+  if (!Q || Q.mode !== mode || Q.arg !== arg || Q.done) startQuiz(mode, arg);
+  if (Q.answered) { Q.answered = false; Q.i++; if (Q.i >= Q.items.length) { Q.done = true; finishQuiz(); return VIEWS.result(); } }
+  const it = Q.items[Q.i]; if (!it) return VIEWS.result();
+  const q = it.q; const L0 = L[q.step];
+  const title = mode === 'smart' ? 'Smart review' : mode === 'mock' ? 'Mock assessment' : mode === 'retry' ? 'Retry mistakes' : L0.title;
+  return { title, backLabel: 'End', solid: true, html: `
+  <div class="qtop"><div class="bar"><i style="width:${Q.i / Q.items.length * 100}%"></i></div><span class="qcount">${Q.i + 1}/${Q.items.length}</span></div>
+  <span class="pill">${esc(L0.badge)} · ${esc(L0.title)}</span>
+  ${q.img ? `<div class="qimg"><img src="${q.img}" alt="Picture for this question"></div>` : ''}
+  <p class="qtext">${esc(q.q)}</p>
+  <div class="opts" role="group" aria-label="Answers">${it.order.map((oi, k) => `<button class="opt" data-oi="${oi}"><span class="k">${'ABCD'[k]}</span><span>${esc(q.o[oi])}</span></button>`).join('')}</div>
+  <div id="fb"></div>`,
+  after(v) {
+    $$('.opt', v).forEach(b => b.onclick = () => {
+      if (Q.answered) return; Q.answered = true;
+      const oi = +b.dataset.oi, ok = oi === q.a;
+      $$('.opt', v).forEach(x => { x.disabled = true; if (+x.dataset.oi === q.a) x.classList.add('right'); });
+      if (!ok) b.classList.add('wrong');
+      grade(q.id, ok); Q.ans.push({ q, ok });
+      if (navigator.vibrate) try { navigator.vibrate(ok ? 15 : [30, 40, 30]); } catch (e) {}
+      const last = Q.i === Q.items.length - 1;
+      $('#fb').innerHTML = `<div class="feedback ${ok ? 'good' : 'bad'}"><b>${ok ? 'Correct' : 'Not quite'}</b>${esc(q.w)}
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px"><button class="linkbtn" data-go="${q.step}">Read the lesson</button><button class="btn" id="nextQ">${last ? 'See results' : 'Next'}</button></div></div>`;
+      $('[data-go]', $('#fb')).onclick = () => go('lesson', q.step);
+      $('#nextQ').onclick = () => { Q.i++; Q.answered = false; if (Q.i >= Q.items.length) { Q.done = true; finishQuiz(); } render(true); window.scrollTo(0, 0); };
+      $('#nextQ').focus({ preventScroll: true });
+      setTimeout(() => $('#fb').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+    });
+  } };
+};
+function finishQuiz() {
+  const s = Math.round(Q.ans.filter(a => a.ok).length / Q.ans.length * 100);
+  if (Q.mode === 'mock') { S.mocks.push({ t: Date.now(), s }); S.mocks = S.mocks.slice(-20); save(); }
+  stacks[tab][stacks[tab].length - 1] = ['result'];
+}
+VIEWS.result = () => {
+  const n = Q.ans.length, c = Q.ans.filter(a => a.ok).length, s = Math.round(c / n * 100);
+  const by = {}; Q.ans.forEach(a => { (by[a.q.step] = by[a.q.step] || { c: 0, n: 0 }).n++; if (a.ok) by[a.q.step].c++; });
+  const weak = Object.entries(by).filter(([, v]) => v.c < v.n).map(([k]) => k);
+  const wrong = Q.ans.filter(a => !a.ok).map(a => a.q);
+  const mock = Q.mode === 'mock'; const pass = s >= 80;
+  return { title: 'Results', solid: true, html: `
+  <div class="card" style="text-align:center;margin-top:10px">
+    <div class="score" style="color:${pass ? 'var(--good)' : s >= 60 ? 'var(--warn)' : 'var(--bad)'}">${s}%</div>
+    <p style="margin:6px 0 0">${c} of ${n} correct</p>
+    ${mock ? `<p style="margin:10px 0 0"><span class="pill ${pass ? 'good' : 'bad'}">${pass ? 'Meets the 80% standard' : 'Below the 80% standard'}</span></p>` : ''}
+  </div>
+  ${Object.keys(by).length > 1 ? `<h2 class="sh">By topic</h2><div class="card bars">${Object.entries(by).map(([k, v]) => `<div class="bl"><b>${esc(L[k].badge)}</b><div class="bar"><i style="width:${v.c / v.n * 100}%;background:${v.c === v.n ? 'var(--good)' : 'var(--warm)'}"></i></div><span>${v.c}/${v.n}</span></div>`).join('')}</div>` : ''}
+  ${weak.length ? `<h2 class="sh">Revise these</h2><div class="group">${weak.map(k => listRow({ go: 'lesson|' + k, badge: L[k].badge, title: esc(L[k].title), sub: esc(L[k].short) })).join('')}</div>` : ''}
+  <div class="row-btns" style="margin-top:20px">
+    ${wrong.length ? `<button class="btn sec" id="retry">Retry ${wrong.length} missed</button>` : ''}
+    <button class="btn" id="fin">Done</button>
+  </div>`,
+  after(v) {
+    bindNav(v);
+    $('#fin').onclick = () => { Q = null; stacks[tab] = [stacks[tab][0]]; render(); window.scrollTo(0, 0); };
+    const r = $('#retry'); if (r) r.onclick = () => { const items = shuffle(wrong); Q = null; startQuiz('retry', items); replace('quiz', 'retry', items); };
+  } };
+};
+VIEWS.mock = () => ({ title: 'Mock assessment', html: `
+  <h1 class="lt" style="margin-top:12px">Mock assessment</h1>
+  <div class="card stack">
+    <p style="margin:0">20 questions drawn from every one of the Ten Steps plus bedside skills, in random order. New questions each attempt.</p>
+    <p style="margin:0" class="muted small">BFHI assessments use an 80% threshold for most indicators. Aim for 80% or more.</p>
+    <button class="btn block" id="startMock">Start</button>
+  </div>
+  ${S.mocks.length ? `<h2 class="sh">Previous attempts</h2><div class="card bars">${S.mocks.slice(-6).reverse().map(m => `<div class="bl"><span class="muted" style="font-size:.75rem">${new Date(m.t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span><div class="bar"><i style="width:${m.s}%;background:${m.s >= 80 ? 'var(--good)' : 'var(--warm)'}"></i></div><span>${m.s}%</span></div>`).join('')}</div>` : ''}`,
+  after() { $('#startMock').onclick = () => { Q = null; replace('quiz', 'mock'); }; } });
+
+/* flashcards */
+let F = null;
+VIEWS.flash = (who) => {
+  who = who || 'All';
+  if (!F || F.who !== who || F.done) { const pool = INTERVIEW.filter(c => who === 'All' || c.who === who); F = { who, deck: shuffle(pool), i: 0, know: 0, again: [] }; }
+  const c = F.deck[F.i];
+  const segs = `<div class="seg" role="group" aria-label="Who is interviewed">${['All', 'Staff', 'Mother'].map(w => `<button aria-pressed="${w === who}" data-who="${w}">${w === 'Mother' ? 'Mothers' : w}</button>`).join('')}</div>`;
+  if (!c) {
+    F.done = true;
+    return { title: 'Interview drill', backLabel: 'Practice', solid: true, html: `${segs}<div class="card" style="text-align:center;margin-top:16px"><div class="score">${F.know}/${F.deck.length}</div><p>answered confidently</p></div>
+    ${F.again.length ? `<h2 class="sh">Practise again</h2><div class="card"><ul class="checks">${F.again.map(x => `<li>${ICON.check}<span>${esc(x.q)}</span></li>`).join('')}</ul></div>` : ''}
+    <div class="row-btns" style="margin-top:18px">${F.again.length ? '<button class="btn sec" id="again">Repeat missed</button>' : ''}<button class="btn" id="restart">New round</button></div>`,
+    after(v) { bindSeg(v); $('#restart').onclick = () => { F = null; render(true); }; const a = $('#again'); if (a) a.onclick = () => { F = { who, deck: shuffle(F.again), i: 0, know: 0, again: [] }; render(true); }; } };
+  }
+  return { title: 'Interview drill', backLabel: 'Practice', solid: true, html: `
+  ${segs}
+  <div class="qtop" style="margin-top:14px"><div class="bar"><i style="width:${F.i / F.deck.length * 100}%"></i></div><span class="qcount">${F.i + 1}/${F.deck.length}</span></div>
+  <div class="fc-stage">
+    <div class="fc" id="fc" role="button" tabindex="0" aria-label="Flip card">
+      <span class="fc-tag yes" id="tagY">GOT IT</span><span class="fc-tag no" id="tagN">AGAIN</span>
+      <div class="in">
+        <div class="face front"><span class="e">Assessor asks ${c.who === 'Staff' ? 'staff' : 'a mother'} · ${esc(L[c.step].badge)}</span><p>${esc(c.q)}</p><span class="hint">Answer out loud, then tap to check</span></div>
+        <div class="face back"><span class="e">${c.who === 'Staff' ? 'Model answer' : 'What a good answer sounds like'}</span><p>${esc(c.a)}</p><span class="hint">Swipe right if you got it, left to see it again</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="row-btns"><button class="btn ghost" id="fN">Again</button><button class="btn" id="fY">Got it</button></div>
+  <p style="text-align:center"><button class="linkbtn" data-go="${c.step}">Open the ${esc(L[c.step].badge)} lesson</button></p>`,
+  after(v) {
+    bindSeg(v);
+    const fc = $('#fc'); let flipped = false;
+    const decide = ok => { touchStreak(); if (ok) F.know++; else F.again.push(c); F.i++; fc.style.transform = `translateX(${ok ? 120 : -120}%) rotate(${ok ? 12 : -12}deg)`; setTimeout(() => render(), 220); };
+    let sx = null, dx = 0, moved = false;
+    fc.addEventListener('touchstart', e => { sx = e.touches[0].clientX; dx = 0; moved = false; fc.style.transition = 'none'; }, { passive: true });
+    fc.addEventListener('touchmove', e => { if (sx === null) return; dx = e.touches[0].clientX - sx; if (Math.abs(dx) > 8) moved = true; fc.style.transform = `translateX(${dx}px) rotate(${dx / 20}deg)`; $('#tagY').style.opacity = Math.max(0, dx / 90); $('#tagN').style.opacity = Math.max(0, -dx / 90); }, { passive: true });
+    fc.addEventListener('touchend', () => { fc.style.transition = ''; if (Math.abs(dx) > 90) decide(dx > 0); else { fc.style.transform = ''; $('#tagY').style.opacity = 0; $('#tagN').style.opacity = 0; } sx = null; });
+    const flip = () => { flipped = !flipped; fc.classList.toggle('flipped', flipped); };
+    fc.addEventListener('click', () => { if (moved) { moved = false; return; } flip(); });
+    fc.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
+    $('#fY').onclick = () => decide(true); $('#fN').onclick = () => decide(false);
+  } };
+};
+function bindSeg(v) { $$('[data-who]', v).forEach(b => b.onclick = () => { F = null; replace('flash', b.dataset.who); }); }
+
+/* ---------- TOOLS ---------- */
+VIEWS.tools = () => {
+  const a = auditScore();
+  return { title: 'Tools', html: `
+  <h1 class="lt" style="margin-top:12px">Tools</h1>
+  <div class="group">
+    ${listRow({ go: 'ebm', badge: ICON.bottle.replace('<svg', '<svg width="20" height="20"'), title: 'EBM storage label', sub: 'Work out the use-by date and time' })}
+    ${listRow({ go: 'audit', badge: ICON.audit.replace('<svg', '<svg width="20" height="20"'), title: 'Ward self-audit', sub: a.n ? a.pct + '% ready · ' + a.n + ' of ' + a.total + ' items rated' : 'Check your ward against each step' })}
+    ${listRow({ go: 'lesson|s6', badge: ICON.pill.replace('<svg', '<svg width="20" height="20"'), title: 'Reasons to supplement', sub: 'WHO acceptable medical reasons' })}
+  </div>
+  <h2 class="sh">App</h2>
+  <div class="group">
+    ${listRow({ go: 'settings', badge: ICON.gear.replace('<svg', '<svg width="20" height="20"'), title: 'Settings', sub: 'Text size, reset progress' })}
+    ${listRow({ go: 'about', badge: ICON.info.replace('<svg', '<svg width="20" height="20"'), title: 'About & sources', sub: 'References and offline status' })}
+  </div>`, after: bindNav };
+};
+
+/* EBM label calculator */
+function addRule(d, r) {
+  const o = new Date(d.getTime());
+  if (r.h) return new Date(o.getTime() + r.h * 3600e3);
+  if (r.d) { o.setDate(o.getDate() + r.d - 1); return o; }
+  if (r.m) { const day = o.getDate(); o.setDate(1); o.setMonth(o.getMonth() + r.m); const last = new Date(o.getFullYear(), o.getMonth() + 1, 0).getDate(); o.setDate(Math.min(day, last)); return o; }
+}
+const dmy = d => d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+function bmTime(d) {
+  const h = d.getHours(), m = d.getMinutes(); const h12 = h % 12 === 0 ? 12 : h % 12;
+  const part = h < 12 ? 'pagi' : h < 14 ? 'tengah hari' : h < 19 ? 'petang' : 'malam';
+  return h12 + (m ? ':' + String(m).padStart(2, '0') : '') + ' ' + part;
+}
+const ruleText = r => !r ? 'Not recommended' : r.h ? r.h + ' h' : r.d ? (r.d === 7 ? '<8 days' : r.d === 14 ? '2 weeks' : r.d + ' days') : r.m + ' months';
+function localISO(d) { const p = n => String(n).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + 'T' + p(d.getHours()) + ':' + p(d.getMinutes()); }
+let ebmWhen = null;
+VIEWS.ebm = () => {
+  if (!ebmWhen) { const n = new Date(); n.setSeconds(0, 0); ebmWhen = localISO(n); }
+  const type = S.ebm.type, loc = S.ebm.loc;
+  return { title: 'EBM label', backLabel: 'Tools', html: `
+  <h1 class="lt" style="margin-top:12px">EBM label</h1>
+  <div class="stack">
+    <div class="field"><span class="flabel">Baby</span><div class="seg" role="group" aria-label="Baby"><button aria-pressed="${type === 'healthy'}" data-type="healthy">Healthy term</button><button aria-pressed="${type === 'pre'}" data-type="pre">Preterm / sick</button></div></div>
+    <div class="field"><label for="when">${loc === 'thaw' ? 'Moved to fridge to thaw' : 'Expressed on'}</label><input type="datetime-local" id="when" value="${ebmWhen}"></div>
+    <div id="out"></div>
+    <div class="field"><span class="flabel">Stored in</span><div class="group" role="radiogroup" aria-label="Storage place">${EBM.map(r => `<button class="radio-row" role="radio" aria-checked="${r.id === loc}" aria-disabled="${!r[type]}" data-loc="${r.id}"><span class="dot"></span><span class="tx">${esc(r.label)}</span><span class="rt">${ruleText(r[type])}</span></button>`).join('')}</div></div>
+    <p class="muted small" style="margin:0">Times follow the KKM / JKN Sarawak guide. Day-based limits count the day of expression as day 1, matching the KKM label example. Warmed milk: use within 1 hour. Never microwave.</p>
+  </div>`,
+  after(v) {
+    const draw = () => {
+      const r = EBM.find(x => x.id === S.ebm.loc), rule = r[S.ebm.type]; const d = new Date($('#when').value);
+      const out = $('#out');
+      if (isNaN(d)) { out.innerHTML = '<div class="label-card no"><b>Enter the date and time.</b></div>'; return; }
+      if (!rule) { out.innerHTML = `<div class="label-card no"><div class="big">Not recommended</div><p style="margin:8px 0 0">For preterm or sick babies, do not keep EBM in this condition. Refrigerate (48 h) or freeze instead.</p></div>`; return; }
+      const end = addRule(d, rule); const expired = end < new Date();
+      const lbl = rule.h && rule.h <= 24 ? `${dmy(d)} ${bmTime(d)} → ${dmy(end)} ${bmTime(end)}` : `${dmy(d)} – ${dmy(end)} (${bmTime(d)})`;
+      const left = end - new Date(); const hl = left / 3600e3;
+      const rem = expired ? 'Expired: discard' : hl < 48 ? Math.floor(hl) + ' h ' + Math.round((hl % 1) * 60) + ' min left' : Math.round(left / DAY) + ' days left';
+      out.innerHTML = `<div class="label-card ${expired ? 'no' : ''}"><span class="flabel">Use by</span>
+        <div class="big">${end.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}<br>${end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</div>
+        <span class="pill ${expired ? 'bad' : hl < 6 ? 'warn' : 'good'}" style="margin-top:8px">${rem}</span>
+        <div class="lbl" id="lbl">${esc(lbl)}</div>
+        <button class="btn sec block" id="cpl">${ICON.copy} Copy label text</button>
+        ${r.note ? `<p class="small muted" style="margin:10px 0 0">${esc(r.note)}</p>` : ''}</div>`;
+      $('#cpl').onclick = () => copyText(lbl);
+    };
+    $$('[data-type]', v).forEach(b => b.onclick = () => { S.ebm.type = b.dataset.type; if (!EBM.find(x => x.id === S.ebm.loc)[S.ebm.type]) S.ebm.loc = 'fridge'; save(); ebmWhen = $('#when').value; render(); });
+    $$('[data-loc]', v).forEach(b => b.onclick = () => { if (b.getAttribute('aria-disabled') === 'true') { toast('Not recommended for preterm / sick babies'); return; } S.ebm.loc = b.dataset.loc; save(); ebmWhen = $('#when').value; render(); });
+    $('#when').addEventListener('input', () => { ebmWhen = $('#when').value; draw(); });
+    draw();
+  } };
+};
+
+/* ward self-audit */
+function auditScore() {
+  let total = 0, n = 0, pts = 0; const per = {};
+  AUDIT.forEach(g => { let gp = 0, gn = 0; g.items.forEach((_, i) => { total++; const v = S.audit[g.step + i]; if (v !== undefined) { n++; gn++; gp += v; pts += v; } }); per[g.step] = gn ? gp / (gn * 2) : null; });
+  return { total, n, pct: n ? Math.round(pts / (n * 2) * 100) : 0, per };
+}
+let confirmReset = false;
+VIEWS.audit = () => {
+  const a = auditScore();
+  const weakest = Object.entries(a.per).filter(([, v]) => v !== null && v < 1).sort((x, y) => x[1] - y[1]).slice(0, 3);
+  return { title: 'Ward self-audit', backLabel: 'Tools', html: `
+  <h1 class="lt" style="margin-top:12px">Ward self-audit</h1>
+  <p class="sub" style="margin-top:-6px">Rate what you see on your ward today. Saved on this phone only.</p>
+  <div class="card" style="display:flex;gap:16px;align-items:center;color:var(--brand)">
+    ${ring(a.pct / 100, 76, a.pct + '%')}
+    <div style="color:var(--ink);min-width:0"><b>${a.n} of ${a.total} items rated</b><p class="small muted" style="margin:2px 0 0">${weakest.length ? 'Focus on: ' + weakest.map(([k]) => 'Step ' + L[k].badge).join(', ') : a.n ? 'No gaps in rated items' : 'Yes = 2, Partly = 1, No = 0'}</p></div>
+  </div>
+  ${AUDIT.map(g => { const p = a.per[g.step]; return `<h2 class="sh" style="display:flex;justify-content:space-between;align-items:center"><span>Step ${esc(L[g.step].badge)} · ${esc(L[g.step].title)}</span>${p !== null ? `<span class="pill ${p >= .8 ? 'good' : p >= .5 ? 'warn' : 'bad'}">${Math.round(p * 100)}%</span>` : ''}</h2>
+    <div class="group">${g.items.map((t, i) => { const v = S.audit[g.step + i]; return `<div class="aud"><span>${esc(t)}</span><div class="seg" role="group" aria-label="${esc(t)}">
+      <button class="y" aria-pressed="${v === 2}" data-a="${g.step + i}" data-v="2">Yes</button><button class="p" aria-pressed="${v === 1}" data-a="${g.step + i}" data-v="1">Partly</button><button class="n" aria-pressed="${v === 0}" data-a="${g.step + i}" data-v="0">No</button></div></div>`; }).join('')}</div>`; }).join('')}
+  <div style="margin-top:22px">${confirmReset ? `<div class="card"><p style="margin:0 0 10px"><b>Clear all audit ratings?</b></p><div class="row-btns"><button class="btn ghost" id="rNo">Keep</button><button class="btn" style="background:var(--bad);color:var(--surface)" id="rYes">Clear</button></div></div>` : `<button class="btn ghost block" id="rst">Clear ratings</button>`}</div>`,
+  after(v) {
+    $$('[data-a]', v).forEach(b => b.onclick = () => { const k = b.dataset.a, val = +b.dataset.v; if (S.audit[k] === val) delete S.audit[k]; else S.audit[k] = val; save(); const y = window.scrollY; render(); window.scrollTo(0, y); });
+    const r = $('#rst'); if (r) r.onclick = () => { confirmReset = true; const y = window.scrollY; render(); window.scrollTo(0, y); };
+    const rn = $('#rNo'); if (rn) rn.onclick = () => { confirmReset = false; render(); };
+    const ry = $('#rYes'); if (ry) ry.onclick = () => { S.audit = {}; confirmReset = false; save(); toast('Ratings cleared'); render(); window.scrollTo(0, 0); };
+  } };
+};
+
+/* settings & about */
+let confirmWipe = false;
+VIEWS.settings = () => ({ title: 'Settings', backLabel: 'Tools', html: `
+  <h1 class="lt" style="margin-top:12px">Settings</h1>
+  <div class="field"><span class="flabel">Text size</span><div class="seg" role="group" aria-label="Text size">${[[.9, 'Small'], [1, 'Default'], [1.1, 'Large'], [1.2, 'Larger']].map(([f, n]) => `<button aria-pressed="${S.fs === f}" data-fs="${f}">${n}</button>`).join('')}</div></div>
+  <h2 class="sh">Progress</h2>
+  <div class="card stack">
+    <p style="margin:0" class="small">${Object.keys(S.read).length} lessons read · ${Object.keys(S.srs).length} questions attempted · ${S.mocks.length} mock assessments</p>
+    ${confirmWipe ? `<p style="margin:0"><b>Reset everything?</b> Lessons, review schedule, mock scores and audit ratings will be cleared.</p><div class="row-btns"><button class="btn ghost" id="wNo">Cancel</button><button class="btn" style="background:var(--bad);color:var(--surface)" id="wYes">Reset</button></div>` : `<button class="btn ghost block" id="wipe">Reset all progress</button>`}
+  </div>`,
+  after(v) {
+    $$('[data-fs]', v).forEach(b => b.onclick = () => { S.fs = +b.dataset.fs; save(); applyFs(); render(); });
+    const w = $('#wipe'); if (w) w.onclick = () => { confirmWipe = true; render(); };
+    const n = $('#wNo'); if (n) n.onclick = () => { confirmWipe = false; render(); };
+    const y = $('#wYes'); if (y) y.onclick = () => { S = Object.assign(JSON.parse(JSON.stringify(DEF)), { fs: S.fs, noInstall: S.noInstall }); confirmWipe = false; save(); toast('Progress reset'); render(); };
+  } });
+VIEWS.about = () => {
+  const off = 'serviceWorker' in navigator && navigator.serviceWorker.controller;
+  return { title: 'About', backLabel: 'Tools', html: `
+  <div class="brand" style="margin-top:12px"><img src="icons/icon-192.png" alt="BFHI Learn logo" width="64" height="64"><h1 class="lt" style="margin:0">About</h1></div>
+  <div class="card stack">
+    <p style="margin:0"><span class="pill ${off ? 'good' : 'warn'}">${off ? 'Available offline' : 'Offline mode not active here'}</span></p>
+    <p style="margin:0">BFHI Learn is a self-study companion for staff preparing for Baby-friendly Hospital Initiative (Hospital Rakan Bayi) assessment, including NICU and SCN teams.</p>
+    <p style="margin:0" class="small muted">Progress is stored only on this device. No data leaves your phone.</p>
+  </div>
+  <h2 class="sh">Sources</h2>
+  <div class="card"><ul class="checks small">
+    <li>${ICON.check}<span>WHO & UNICEF. Implementation guidance: protecting, promoting and supporting breastfeeding in facilities providing maternity and newborn services — the revised Baby-friendly Hospital Initiative. 2018.</span></li>
+    <li>${ICON.check}<span>WHO & UNICEF. Acceptable medical reasons for use of breast-milk substitutes. 2009.</span></li>
+    <li>${ICON.check}<span>WHO. International Code of Marketing of Breast-milk Substitutes. 1981, and subsequent WHA resolutions.</span></li>
+    <li>${ICON.check}<span>Nyqvist KH, et al. Neo-BFHI: The Baby-friendly Hospital Initiative for Neonatal Wards. Core document. 2015.</span></li>
+    <li>${ICON.check}<span>Kementerian Kesihatan Malaysia. Manual Pembimbing Penyusuan Susu Ibu. 2019.</span></li>
+    <li>${ICON.check}<span>Jabatan Kesihatan Negeri Sarawak, Cawangan Pemakanan. Penyusuan Susu Ibu Pilihan Terbaik Anda (booklet).</span></li>
+    <li>${ICON.check}<span>National Lactation Centre, KKM. Infographics on positioning and attachment.</span></li>
+  </ul></div>
+  <p class="muted small" style="margin:14px 4px">For education only. Follow your hospital policy and national guidelines for clinical decisions.</p>`, after() {} };
+};
+
+/* ---------- boot ---------- */
+function applyFs() { document.documentElement.style.fontSize = (16 * (S.fs || 1)) + 'px'; }
+$$('.tab').forEach(b => { const t = b.dataset.tab; b.innerHTML = ICON[t] + `<span>${{ home: 'Home', learn: 'Learn', practice: 'Practice', tools: 'Tools' }[t]}</span>`; b.onclick = () => switchTab(t); });
+applyFs();
+const h = (location.hash || '').slice(1);
+if (stacks[h]) tab = h;
+render();
+if ('serviceWorker' in navigator && topLevel && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  try { navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
+}
+})();
+</script>
+
+</body>
+</html>
